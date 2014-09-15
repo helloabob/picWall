@@ -92,7 +92,8 @@ package
 			var loader:Loader = evt.target.loader;
 			var portion:Number = loader.content.width/loader.content.height;
 			var newHeight:int = height-10;
-			var newWidth:int = newHeight*portion;
+//			var newWidth:int = newHeight*portion;
+			var newWidth:int = newHeight;
 			var width:int = newWidth+10;
 			
 			var back:Sprite = new Sprite();
