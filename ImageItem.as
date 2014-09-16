@@ -76,7 +76,7 @@ package
 
 		public function set imageName(name:String):void{
 			var url:String = "images/"+name+".jpg";
-			trace(url);
+//			trace(url);
 			var request:URLRequest=new URLRequest(url);
 			var ld:Loader = new Loader();
 			ld.contentLoaderInfo.addEventListener(Event.COMPLETE,oncomp);
