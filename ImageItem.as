@@ -8,106 +8,145 @@ package
 	import flash.events.EventDispatcher;
 	import flash.net.URLRequest;
 	
-	public class ImageItem extends EventDispatcher
+	public class ImageItem extends Sprite
 	{
-		
-		private var _width:int;
-		private var _height:int;
-		private var _view:Sprite;
-		private var _y:int;
-		private var _x:int;
+		private var _id:String;
+		private var _contentHeight:int;
+		private var _contentWidth:int;
+		private var _fileName:String;
+//		private var _width:int;
+//		private var _height:int;
+//		private var _view:Sprite;
+//		private var _y:int;
+//		private var _x:int;
 		
 		public function ImageItem()
 		{
-			_view = new Sprite();
+//			_view = new Sprite();
 		}
 
-		public function get x():int
+		public function get contentWidth():int
 		{
-			return _x;
+			return _contentWidth;
 		}
 
-		public function set x(value:int):void
+		public function set contentWidth(value:int):void
 		{
-			_x = value;
-			_view.x = value;
+			_contentWidth = value;
 		}
 
-		public function get y():int
+		public function get fileName():String
 		{
-			return _y;
+			return _fileName;
 		}
 
-		public function set y(value:int):void
+		public function set fileName(value:String):void
 		{
-			_y = value;
-			_view.y = value;
+			_fileName = value;
 		}
 
-		public function get view():Sprite
+		public function get contentHeight():int
 		{
-			return _view;
+			return _contentHeight;
 		}
 
-		public function set view(value:Sprite):void
+		public function set contentHeight(value:int):void
 		{
-			_view = value;
+			_contentHeight = value;
 		}
 
-		public function get height():int
+		public function get id():String
 		{
-			return _height;
+			return _id;
 		}
 
-		public function set height(value:int):void
+		public function set id(value:String):void
 		{
-			_height = value;
+			_id = value;
 		}
 
-		public function get width():int
-		{
-			return _width;
-		}
+//		public function get x():int
+//		{
+//			return _x;
+//		}
 
-		public function set width(value:int):void
-		{
-			_width = value;
-		}
+//		public function set x(value:int):void
+//		{
+//			_x = value;
+//			_view.x = value;
+//		}
+
+//		public function get y():int
+//		{
+//			return _y;
+//		}
+//
+//		public function set y(value:int):void
+//		{
+//			_y = value;
+//			_view.y = value;
+//		}
+
+//		public function get view():Sprite
+//		{
+//			return _view;
+//		}
+//
+//		public function set view(value:Sprite):void
+//		{
+//			_view = value;
+//		}
+
+//		public function get height():int
+//		{
+//			return _height;
+//		}
+//
+//		public function set height(value:int):void
+//		{
+//			_height = value;
+//		}
+//
+//		public function get width():int
+//		{
+//			return _width;
+//		}
+//
+//		public function set width(value:int):void
+//		{
+//			_width = value;
+//		}
 
 		public function set imageName(name:String):void{
-			var url:String = "images/"+name+".jpg";
+			_fileName = "images/"+name+".jpg";
 //			trace(url);
-			var request:URLRequest=new URLRequest(url);
+			var request:URLRequest=new URLRequest(_fileName);
 			var ld:Loader = new Loader();
 			ld.contentLoaderInfo.addEventListener(Event.COMPLETE,oncomp);
 			ld.load(request);
-			
-			
 		}
+		
 		private function oncomp(evt:Event):void{
-//			var loader:Loader = Loader(evt.target.loader);
-//			var bm:Bitmap = Bitmap(loader.content);
-			
-//			addChild(bm);
 			var loader:Loader = evt.target.loader;
 			var portion:Number = loader.content.width/loader.content.height;
-			var newHeight:int = height-10;
-//			var newWidth:int = newHeight*portion;
+			var newHeight:int = contentHeight-Constants.verticalPadding*2;
 			var newWidth:int = newHeight;
-			var width:int = newWidth+10;
+			var width2:int = newWidth+Constants.horizontalPadding*2;
 			
 			var back:Sprite = new Sprite();
 			back.graphics.beginFill(0x000000,0.1);
-			back.graphics.drawRect(0,0,width,height);
+			back.graphics.drawRect(0,0,width2,height);
 			back.graphics.endFill();
-			_view.addChild(back);
+			addChild(back);
+//			_view.addChild(back);
 			
 			
 			loader.content.height = newHeight;
 			loader.content.width = newWidth;
-			loader.content.x = 5;
-			loader.content.y = 5;
-			_view.addChild(loader);
+			loader.content.x = Constants.horizontalPadding;
+			loader.content.y = Constants.verticalPadding;
+			addChild(loader);
+//			_view.addChild(loader);
 			
 			var event:TableViewEvent=new TableViewEvent(TableViewEvent.ITEMDIDAPPEAR);
 			event.itemWidth = width;
