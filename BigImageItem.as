@@ -7,7 +7,6 @@ package
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
 	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	
@@ -18,14 +17,15 @@ package
 			if(_instance==null)_instance=new BigImageItem();
 			return _instance;
 		}
-		private var imageSize:int;
+		private var imageWidth:int;
+		private var imageHeight:int;
 		private var imageName:String;
 		private var _stage:Stage;
 		
 		private var _imageLoader:Loader = new Loader();
 		private var _titleSprite:Sprite = new Sprite();
 		private var _title:TextField = new TextField();
-		private var _clsBtn:CloseBtn = new CloseBtn();
+//		private var _clsBtn:CloseBtn = new CloseBtn();
 		
 		public function BigImageItem()
 		{
@@ -34,7 +34,7 @@ package
 			addChild(_imageLoader);
 			addChild(_titleSprite);
 			addChild(_title);
-			addChild(_clsBtn);
+//			addChild(_clsBtn);
 			
 			//title properties
 			_title.textColor = 0xffffff;
@@ -45,30 +45,31 @@ package
 			_title.setTextFormat(tf);
 			
 			//close button property
-			_clsBtn.width = 20;
-			_clsBtn.height = 20;
-			_clsBtn.addEventListener(MouseEvent.CLICK, onClose);
+//			_clsBtn.width = 20;
+//			_clsBtn.height = 20;
+//			_clsBtn.addEventListener(MouseEvent.CLICK, onClose);
 			
 			//self event listener
-			this.addEventListener(MouseEvent.MOUSE_DOWN,onStartDrag);
-			this.addEventListener(MouseEvent.MOUSE_UP,onStopDrag);
+//			this.addEventListener(MouseEvent.MOUSE_DOWN,onStartDrag);
+//			this.addEventListener(MouseEvent.MOUSE_UP,onStopDrag);
 		}
-		private function onClose(evt:MouseEvent):void{
-			evt.stopPropagation();
-			this.hideImage();
-		}
-		private function onStartDrag(evt:MouseEvent):void{
-			this.startDrag();
-		}
-		private function onStopDrag(evt:MouseEvent):void{
-			this.stopDrag();
-		}
+//		private function onClose(evt:MouseEvent):void{
+//			evt.stopPropagation();
+//			this.hideImage();
+//		}
+//		private function onStartDrag(evt:MouseEvent):void{
+//			this.startDrag();
+//		}
+//		private function onStopDrag(evt:MouseEvent):void{
+//			this.stopDrag();
+//		}
 		public function showImage(fileName:String,stg:Stage):void{
 			if(imageName!=null&&imageName == fileName)return;
 			else{
 				_stage = stg;
+				imageWidth = _stage.stageWidth / 6;
+				imageHeight = _stage.stageHeight / 6;
 				hideImage();
-				imageSize = _stage.stageHeight / 2;
 				imageName = fileName;
 				var request:URLRequest=new URLRequest(fileName);
 				_imageLoader.load(request);
@@ -82,17 +83,17 @@ package
 			var originalWidth:Number = loader.content.width;
 			var originalHeight:Number = loader.content.height;
 			var newWidth:int,newHeight:int;
-			if(originalWidth>originalHeight){
-				newWidth = imageSize;
-				newHeight = Number(imageSize)/originalWidth * originalHeight;
-			}else {
-				newHeight = imageSize;
-				newWidth = Number(imageSize)/originalHeight * originalWidth;
-			}
-			loader.content.height = newHeight;
-			loader.content.width = newWidth;
-			this.x = _stage.stageWidth/2 - newWidth/2;
-			this.y = _stage.stageHeight/2 - newHeight/2;
+//			if(originalWidth>originalHeight){
+//				newWidth = imageSize;
+//				newHeight = Number(imageSize)/originalWidth * originalHeight;
+//			}else {
+//				newHeight = imageSize;
+//				newWidth = Number(imageSize)/originalHeight * originalWidth;
+//			}
+			loader.content.height = imageWidth;
+			loader.content.width = imageHeight;
+			this.x = _stage.stageWidth/2 - imageWidth/2;
+			this.y = _stage.stageHeight/2 - imageHeight/2;
 			
 			
 			drawBackColor(_titleSprite,0x000000,newWidth);
