@@ -14,6 +14,7 @@ package
 		private var _contentHeight:int;
 		private var _contentWidth:int;
 		private var _fileName:String;
+		private var _content:Sprite;
 //		private var _width:int;
 //		private var _height:int;
 //		private var _view:Sprite;
@@ -63,6 +64,10 @@ package
 		public function set id(value:String):void
 		{
 			_id = value;
+		}
+		
+		public function get content():Sprite{
+			return _content;
 		}
 
 //		public function get x():int
@@ -118,7 +123,8 @@ package
 //		}
 
 		public function set imageName(name:String):void{
-			_fileName = "images/"+name+".jpg";
+//			_fileName = "images/"+name+".jpg";
+			_fileName = Constants.smallImageUrl.replace("{0}",name);
 //			trace(url);
 			var request:URLRequest=new URLRequest(_fileName);
 			var ld:Loader = new Loader();
@@ -130,22 +136,26 @@ package
 			var loader:Loader = evt.target.loader;
 			var portion:Number = loader.content.width/loader.content.height;
 			var newHeight:int = contentHeight-Constants.verticalPadding*2;
-			var newWidth:int = newHeight;
-			var width2:int = newWidth+Constants.horizontalPadding*2;
+			var newWidth:int = contentWidth-Constants.horizontalPadding*2;
+//			var width2:int = newWidth+Constants.horizontalPadding*2;
 			
 			var back:Sprite = new Sprite();
 			back.graphics.beginFill(0x000000,0.1);
-			back.graphics.drawRect(0,0,width2,height);
+			back.graphics.drawRect(0,0,contentWidth,contentHeight);
 			back.graphics.endFill();
 			addChild(back);
 //			_view.addChild(back);
 			
+			_content = new Sprite();
+			_content.x = Constants.horizontalPadding;
+			_content.y = Constants.verticalPadding;
 			
 			loader.content.height = newHeight;
 			loader.content.width = newWidth;
-			loader.content.x = Constants.horizontalPadding;
-			loader.content.y = Constants.verticalPadding;
-			addChild(loader);
+//			loader.content.x = Constants.horizontalPadding;
+//			loader.content.y = Constants.verticalPadding;
+			_content.addChild(loader);
+			addChild(_content);
 //			_view.addChild(loader);
 			
 			var event:TableViewEvent=new TableViewEvent(TableViewEvent.ITEMDIDAPPEAR);
