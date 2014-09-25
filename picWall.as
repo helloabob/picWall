@@ -29,8 +29,10 @@ package
 			
 			vc = new TableViewController();
 			vc.addEventListener(TableViewEvent.ITEMWILLSHOW, onItemWillShow);
-			vc.rows = 6;
-			vc.cols = 10;
+//			vc.rows = 6;
+//			vc.cols = 10;
+			vc.rows = 9;
+			vc.cols = 12;
 			vc.stage = stage;
 			vc.lists = imageList;
 			addChild(vc.view);
@@ -56,6 +58,7 @@ package
 			if(activelayer.contains(BigImageItem.instance)){
 				BigImageItem.instance.scaleX+=evt.deltaScale;
 				BigImageItem.instance.scaleY+=evt.deltaScale;
+				BigImageItem.instance.restartTimer();
 			}
 		}
 		
@@ -68,21 +71,28 @@ package
 //			txt.text+=(str+"\n");
 		}
 		
-		private function onMaskTapped(evt:TableViewEvent):void{
-			vc.showImageWithAnimation(evt.offsetX,evt.offsetY);
-		}
-		private function onMaskTouchDown(evt:TableViewEvent):void{
-			isBigItem = false;
+		private function isInBigItemArea(evt:TableViewEvent):Boolean{
 			if(activelayer.numChildren > 0){
 				var nx:int = BigImageItem.instance.x;
 				var ny:int = BigImageItem.instance.y;
 				var nw:int = BigImageItem.instance.width;
 				var nh:int = BigImageItem.instance.height;
 				if(evt.offsetX>=nx&&evt.offsetX<=nx+nw&&evt.offsetY>=ny&&evt.offsetY<=ny+nh){
-					isBigItem = true;
-					return;
+					return true;
 				}
 			}
+			return false;
+		}
+		
+		private function onMaskTapped(evt:TableViewEvent):void{
+			if(isInBigItemArea(evt)==false)vc.showImageWithAnimation(evt.offsetX,evt.offsetY);
+			else{
+//				if(evt.offsetX-
+			}
+		}
+		private function onMaskTouchDown(evt:TableViewEvent):void{
+			isBigItem = isInBigItemArea(evt);
+			if(isBigItem==true)return;
 			
 			var item:ImageItem = vc.getSpriteAtPoint(evt.offsetX,evt.offsetY);if(item==null)return;
 			moveImageId = item.id;
@@ -99,6 +109,7 @@ package
 			if(isBigItem){
 				BigImageItem.instance.x += evt.offsetX;
 				BigImageItem.instance.y += evt.offsetY;
+				BigImageItem.instance.restartTimer();
 			} else {
 				if(!activelayer.contains(moveBitmap))activelayer.addChild(moveBitmap);
 				moveBitmap.x+=evt.offsetX;

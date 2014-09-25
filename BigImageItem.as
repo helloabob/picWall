@@ -4,11 +4,13 @@ package
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	
 	public class BigImageItem extends Sprite
@@ -31,9 +33,10 @@ package
 		private var _clsBtn:CloseBtn = new CloseBtn();
 		
 		private var _is_first_play:Boolean = true;
-		private var _close_timer:Timer = new Timer(600000);
+		private var _close_timer:Timer = new Timer(60000);
 		
 		public var isShowing:Boolean = false;
+		private var imageCountArray:Dictionary=new Dictionary();
 		
 		public function BigImageItem()
 		{
@@ -61,16 +64,16 @@ package
 			//close button property
 			_clsBtn.width = 20;
 			_clsBtn.height = 20;
-//			_clsBtn.addEventListener(MouseEvent.CLICK, onClose);
+			_clsBtn.addEventListener(MouseEvent.CLICK, onClose);
 			
 			//self event listener
 //			this.addEventListener(MouseEvent.MOUSE_DOWN,onStartDrag);
 //			this.addEventListener(MouseEvent.MOUSE_UP,onStopDrag);
 		}
-//		private function onClose(evt:MouseEvent):void{
-//			evt.stopPropagation();
-//			this.hideImage();
-//		}
+		private function onClose(evt:MouseEvent):void{
+			evt.stopPropagation();
+			this.hideImage();
+		}
 //		private function onStartDrag(evt:MouseEvent):void{
 //			this.startDrag();
 //		}
@@ -78,6 +81,7 @@ package
 //			this.stopDrag();
 //		}
 		public function showImage(imageId:String,stg:Stage,par:Sprite):void{
+			_close_timer.reset();
 			if(imageName!=null&&imageName == imageId)return;
 			else{
 				_stage = stg;
@@ -91,14 +95,17 @@ package
 				_imageLoader.load(request);
 			}
 		}
+		public function restartTimer():void{
+			_close_timer.reset();
+			_close_timer.start();
+		}
 		private function onCloseTimer(evt:TimerEvent):void{
 			hideImage();
-			_close_timer.reset();
 		}
 		private function hideImage():void{
 			if(_parent.contains(this))_parent.removeChild(this);
+			_close_timer.reset();
 		}
-		private static var count:int = 1;
 		private function oncomp(evt:Event):void{
 			var loader:Loader = evt.target.loader
 			var originalWidth:Number = loader.content.width;
@@ -131,6 +138,15 @@ package
 			_title.selectable = false;
 			_title.y = imageHeight;
 			
+			var count:int = 0;
+			if(imageCountArray[imageName]==null){
+				count = 1;
+			} else {
+				count = imageCountArray[imageName];
+				count ++;
+			}
+			imageCountArray[imageName] = count;
+			
 			_clickTitle.text = "展示次数: "+count++;
 			_clickTitle.width = imageWidth;
 			_clickTitle.height = blackBackHeight/7;
@@ -138,6 +154,7 @@ package
 			_clickTitle.y = imageHeight+_title.height;
 
 			_parent.addChild(this);
+			_close_timer.start();
 			
 		}
 		private function drawBackColor(contain:Sprite,color:uint,wid:int,hei:int):void{
