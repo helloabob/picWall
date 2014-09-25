@@ -4,10 +4,12 @@ package
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.events.TimerEvent;
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import flash.utils.Timer;
 	
 	public class BigImageItem extends Sprite
 	{
@@ -26,17 +28,22 @@ package
 		private var _titleSprite:Sprite = new Sprite();
 		private var _title:TextField = new TextField();
 		private var _clickTitle:TextField = new TextField();
-//		private var _clsBtn:CloseBtn = new CloseBtn();
+		private var _clsBtn:CloseBtn = new CloseBtn();
+		
+		private var _is_first_play:Boolean = true;
+		private var _close_timer:Timer = new Timer(600000);
+		
+		public var isShowing:Boolean = false;
 		
 		public function BigImageItem()
 		{
-			
+			_close_timer.addEventListener(TimerEvent.TIMER, onCloseTimer);
 			_imageLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,oncomp);
 			addChild(_imageLoader);
 			addChild(_titleSprite);
 			addChild(_title);
 			addChild(_clickTitle);
-//			addChild(_clsBtn);
+			addChild(_clsBtn);
 			
 			//title properties
 			_title.textColor = 0xffffff;
@@ -52,8 +59,8 @@ package
 			_title.wordWrap = true;
 			
 			//close button property
-//			_clsBtn.width = 20;
-//			_clsBtn.height = 20;
+			_clsBtn.width = 20;
+			_clsBtn.height = 20;
 //			_clsBtn.addEventListener(MouseEvent.CLICK, onClose);
 			
 			//self event listener
@@ -84,6 +91,10 @@ package
 				_imageLoader.load(request);
 			}
 		}
+		private function onCloseTimer(evt:TimerEvent):void{
+			hideImage();
+			_close_timer.reset();
+		}
 		private function hideImage():void{
 			if(_parent.contains(this))_parent.removeChild(this);
 		}
@@ -104,14 +115,15 @@ package
 			
 			loader.content.height = imageHeight;
 			loader.content.width = imageWidth;
-			this.x = _stage.stageWidth/2 - imageWidth/2;
-			this.y = _stage.stageHeight/2 - imageHeight/2;
-			
+			if(_is_first_play){
+				this.x = _stage.stageWidth/2 - imageWidth/2;
+				this.y = _stage.stageHeight/2 - imageHeight/2;
+				_is_first_play = false;
+			}
 			
 			var blackBackHeight:int = 150;
 			drawBackColor(_titleSprite,0x000000,imageWidth,blackBackHeight);
 			_titleSprite.y = imageHeight;
-			
 			
 			_title.text = "图片简介: "+Constants.imageDescription;
 			_title.width = imageWidth;

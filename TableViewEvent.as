@@ -11,7 +11,9 @@ package
 		public static var MASKTOUCHDOWN:String = "MASKTOUCHDOWN";
 		public static var MASKTOUCHMOVE:String = "MASKTOUCHMOVE";
 		public static var MASKTOUCHUP:String   = "MASKTOUCHUP";
-		public static var ITEMWILLSHOW:String = "ITEMWILLSHOW";
+		public static var ITEMWILLSHOW:String  = "ITEMWILLSHOW";
+		
+		public static var ITEMDIDZOOM:String   = "ITEMDIDZOOM";
 		
 		public var rowIndex:int;
 		public var colIndex:int;
@@ -21,6 +23,10 @@ package
 		
 		public var offsetX:int;
 		public var offsetY:int;
+		
+		public var deltaScale:Number;
+		public var deltaX:Number;
+		public var deltaY:Number;
 		
 		public function TableViewEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{

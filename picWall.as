@@ -43,12 +43,20 @@ package
 			mask.addEventListener(TableViewEvent.MASKTOUCHDOWN, onMaskTouchDown);
 			mask.addEventListener(TableViewEvent.MASKTOUCHMOVE, onMaskTouchMove);
 			mask.addEventListener(TableViewEvent.MASKTOUCHUP, onMaskTouchUp);
+			mask.addEventListener(TableViewEvent.ITEMDIDZOOM, onMaskZoom);
 			addChild(mask);
 			
 			vc.start();
 //			
 //			stage.addEventListener(TouchEvent.TAP, onTap);
 //			stage.addEventListener(TouchEvent.TOUCH_DOWN,onTouchDown);
+		}
+		
+		private function onMaskZoom(evt:TableViewEvent):void{
+			if(activelayer.contains(BigImageItem.instance)){
+				BigImageItem.instance.scaleX+=evt.deltaScale;
+				BigImageItem.instance.scaleY+=evt.deltaScale;
+			}
 		}
 		
 		private function onItemWillShow(evt:TableViewEvent):void{

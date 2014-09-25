@@ -1,5 +1,9 @@
 package
 {
+	import com.lylib.touch.OSMultiTouch;
+	import com.lylib.touch.events.ZoomEvent;
+	import com.lylib.touch.gestures.ZoomGesture;
+	
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.MouseEvent;
@@ -9,6 +13,7 @@ package
 		private var isTapped:Boolean = false;
 		private var lastX:int;
 		private var lastY:int;
+		private var multiTouch:OSMultiTouch = OSMultiTouch.getInstance();
 		public function TUIOLayer(_stage:Stage)
 		{
 			graphics.beginFill(0x000000,0.1);
@@ -17,7 +22,13 @@ package
 			
 //			this.addEventListener(MouseEvent.CLICK, onClick);
 			this.addEventListener(MouseEvent.MOUSE_DOWN, onDown);
-			
+			multiTouch.enableGesture(this,new ZoomGesture(),onZoomGesture);
+		}
+		private function onZoomGesture(evt:ZoomEvent):void{
+			trace("zoom @ delta_scale:"+evt.deltaScale);
+			var event:TableViewEvent = new TableViewEvent(TableViewEvent.ITEMDIDZOOM);
+			event.deltaScale = evt.deltaScale;
+			dispatchEvent(event);
 		}
 		private function onDown(evt:MouseEvent):void{
 			isTapped = true;
