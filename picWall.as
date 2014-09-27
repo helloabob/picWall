@@ -14,6 +14,7 @@ package
 		private var imageList:Array = [];
 		private var vc:TableViewController;
 		private var activelayer:Sprite;
+		private var bigitemlayer:Sprite;
 		private var moveBitmap:Bitmap;
 		private var moveloader:Loader;
 		private var moveImageId:String;
@@ -49,6 +50,9 @@ package
 			addChild(mask);
 			
 			vc.start();
+			
+			bigitemlayer = new Sprite();
+			addChild(bigitemlayer);
 //			
 //			stage.addEventListener(TouchEvent.TAP, onTap);
 //			stage.addEventListener(TouchEvent.TOUCH_DOWN,onTouchDown);
@@ -63,7 +67,7 @@ package
 		}
 		
 		private function onItemWillShow(evt:TableViewEvent):void{
-			BigImageItem.instance.showImage(evt.item["imageId"],stage,activelayer);
+			BigImageItem.instance.showImage(evt.item["imageId"],stage,bigitemlayer);
 		}
 		
 		private function tracelog(str:String):void{
