@@ -28,13 +28,15 @@ package
 			return _instance;
 		}
 		
-		private const contentWidth:int = 788;
-		private const contentHeight:int = 517;
+		public const contentWidth:int = 788;
+		public const contentHeight:int = 517;
 		private const imageHeight:int = 442;
+		private const imageWidth:int = 758;
 		private const padding:int = 15;
 		private const lovePadding:int = 40;
 		private const closePadding:int = 30;
 		private const titleSpriteHeight:int = 114;
+		private const clickTitleWidth:int = 120;
 		
 		private var imageName:String;
 		private var _parent:Sprite;
@@ -66,10 +68,13 @@ package
 			
 			_imageLoader.x = padding;
 			_imageLoader.y = padding;
+			_imageLoader.mask = _imageMask;
 			
 			_imageMask.graphics.beginFill(0xffffff,0);
 			_imageMask.graphics.drawRect(0,0,contentWidth-2*padding,imageHeight);
 			_imageMask.graphics.endFill();
+			_imageMask.x = padding;
+			_imageMask.y = padding;
 			
 			_loveBtn.x = lovePadding;
 			_loveBtn.y = lovePadding;
@@ -78,9 +83,9 @@ package
 			
 			//title properties
 			_title.textColor = 0xffffff;
-			_clickTitle.textColor = 0xffffff;
+			_clickTitle.textColor = 0x000000;
 			var tf:TextFormat = new TextFormat();
-			tf.size = 14;
+			tf.size = 20;
 			tf.align = TextFormatAlign.LEFT;
 			_title.defaultTextFormat = tf;
 			_title.setTextFormat(tf);
@@ -104,6 +109,11 @@ package
 			_title.y = _titleSprite.y;
 			_title.x = _titleSprite.x;
 			
+//			_clickTitle.height = 
+			_clickTitle.selectable = false;
+			_clickTitle.x = contentWidth-padding-clickTitleWidth;
+			_clickTitle.y = contentHeight-padding-30;
+			
 			addChild(_whiteBackSprite);
 			addChild(_imageLoader);
 			addChild(_imageMask);
@@ -115,9 +125,48 @@ package
 			
 			
 			
+			
+			
 			//self event listener
 //			this.addEventListener(MouseEvent.MOUSE_DOWN,onStartDrag);
 //			this.addEventListener(MouseEvent.MOUSE_UP,onStopDrag);
+		}
+		private function addLoveCount():void{
+			var count:int = 0;
+			if(imageCountArray[imageName]==null){
+				count = 1;
+			} else {
+				count = imageCountArray[imageName];
+				count ++;
+			}
+			imageCountArray[imageName] = count;
+			
+			_clickTitle.text = "赞次数: "+count;
+		}
+		public function zoomImage(evt:TableViewEvent):void{
+			_imageLoader.content.scaleX = evt.deltaX;
+			_imageLoader.content.scaleY = evt.deltaY;
+			this.restartTimer();
+		}
+		public function tapImage(evt:TableViewEvent):void{
+			var ox:int = evt.offsetX-x;
+			var oy:int = evt.offsetY-y;
+			if(ox>=_loveBtn.x
+				&&ox<=_loveBtn.x+_loveBtn.width
+				&&oy>=_loveBtn.y
+				&&oy<=_loveBtn.y+_loveBtn.height){
+				addLoveCount();
+			}else if(ox>=_clsBtn.x
+				&&ox<=_clsBtn.x+_clsBtn.width
+				&&oy>=_clsBtn.y
+				&&oy<=_clsBtn.x+_clsBtn.height){
+				hideImage();
+			}
+		}
+		public function moveImage(offsetX:int,offsetY:int):void{
+			_imageLoader.x += offsetX;
+			_imageLoader.y += offsetY;
+			this.restartTimer();
 		}
 		private function onClose(evt:MouseEvent):void{
 			evt.stopPropagation();
@@ -135,10 +184,11 @@ package
 			else{
 				_stage = stg;
 				_parent = par;
-//				imageWidth = _stage.stageWidth / 6;
-//				imageHeight = _stage.stageHeight / 6;
-//				imageHeight = 240;
-				hideImage();
+				if(_is_first_play){
+					this.x = _stage.stageWidth/2 - contentWidth/2;
+					this.y = _stage.stageHeight/2 - contentHeight/2;
+				}
+				
 				imageName = imageId;
 				var request:URLRequest=new URLRequest(Constants.bigImageUrl.replace("{0}",imageId));
 				_imageLoader.load(request);
@@ -160,6 +210,16 @@ package
 			var originalWidth:Number = loader.content.width;
 			var originalHeight:Number = loader.content.height;
 			var newWidth:int,newHeight:int;
+			
+			var portion:Number = 442.0/758.0;
+			var new_por:Number = originalHeight/originalWidth;
+			if(new_por<portion){
+				newHeight = imageHeight;
+				newWidth = newHeight/new_por;
+			}else{
+				newWidth = imageWidth;
+				newHeight = newWidth*new_por;
+			}
 //			if(originalWidth>originalHeight){
 //				newWidth = imageSize;
 //				newHeight = Number(imageSize)/originalWidth * originalHeight;
@@ -168,12 +228,12 @@ package
 //				newWidth = Number(imageSize)/originalHeight * originalWidth;
 //			}
 			
-			
-			_imageLoader.content.height = imageHeight;
-			_imageLoader.content.width = contentWidth-2*padding;
+			_imageLoader.x = padding;
+			_imageLoader.y = padding;
+			_imageLoader.content.height = newHeight;
+			_imageLoader.content.width = newWidth;
 			if(_is_first_play){
-				this.x = _stage.stageWidth/2 - contentWidth/2;
-				this.y = _stage.stageHeight/2 - contentHeight/2;
+				
 				_is_first_play = false;
 			}
 			
@@ -182,21 +242,11 @@ package
 			
 			_title.text = "图片简介: "+Constants.imageDescription;
 			
-			
 			var count:int = 0;
-			if(imageCountArray[imageName]==null){
-				count = 1;
-			} else {
+			if(imageCountArray[imageName]!=null){
 				count = imageCountArray[imageName];
-				count ++;
 			}
-			imageCountArray[imageName] = count;
-			
-			_clickTitle.text = "展示次数: "+count++;
-//			_clickTitle.width = imageWidth;
-			_clickTitle.height = blackBackHeight/7;
-			_clickTitle.selectable = false;
-			_clickTitle.y = imageHeight+_title.height;
+			_clickTitle.text = "赞次数: "+count;
 
 			_parent.addChild(this);
 			_close_timer.start();

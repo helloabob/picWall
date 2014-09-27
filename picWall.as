@@ -41,6 +41,9 @@ package
 			activelayer = new Sprite();
 			addChild(activelayer);
 			
+			bigitemlayer = new Sprite();
+			addChild(bigitemlayer);
+			
 			var mask:TUIOLayer = new TUIOLayer(stage);
 			mask.addEventListener(TableViewEvent.MASKDIDTAPPED, onMaskTapped);
 			mask.addEventListener(TableViewEvent.MASKTOUCHDOWN, onMaskTouchDown);
@@ -51,18 +54,18 @@ package
 			
 			vc.start();
 			
-			bigitemlayer = new Sprite();
-			addChild(bigitemlayer);
+			
 //			
 //			stage.addEventListener(TouchEvent.TAP, onTap);
 //			stage.addEventListener(TouchEvent.TOUCH_DOWN,onTouchDown);
 		}
 		
 		private function onMaskZoom(evt:TableViewEvent):void{
-			if(activelayer.contains(BigImageItem.instance)){
-				BigImageItem.instance.scaleX+=evt.deltaScale;
-				BigImageItem.instance.scaleY+=evt.deltaScale;
-				BigImageItem.instance.restartTimer();
+			if(bigitemlayer.contains(BigImageItem.instance)){
+				BigImageItem.instance.zoomImage(evt);
+//				BigImageItem.instance.scaleX+=evt.deltaScale;
+//				BigImageItem.instance.scaleY+=evt.deltaScale;
+//				BigImageItem.instance.restartTimer();
 			}
 		}
 		
@@ -76,11 +79,11 @@ package
 		}
 		
 		private function isInBigItemArea(evt:TableViewEvent):Boolean{
-			if(activelayer.numChildren > 0){
+			if(bigitemlayer.numChildren > 0){
 				var nx:int = BigImageItem.instance.x;
 				var ny:int = BigImageItem.instance.y;
-				var nw:int = BigImageItem.instance.width;
-				var nh:int = BigImageItem.instance.height;
+				var nw:int = BigImageItem.instance.contentWidth;
+				var nh:int = BigImageItem.instance.contentHeight;
 				if(evt.offsetX>=nx&&evt.offsetX<=nx+nw&&evt.offsetY>=ny&&evt.offsetY<=ny+nh){
 					return true;
 				}
@@ -91,7 +94,7 @@ package
 		private function onMaskTapped(evt:TableViewEvent):void{
 			if(isInBigItemArea(evt)==false)vc.showImageWithAnimation(evt.offsetX,evt.offsetY);
 			else{
-//				if(evt.offsetX-
+				BigImageItem.instance.tapImage(evt);
 			}
 		}
 		private function onMaskTouchDown(evt:TableViewEvent):void{
@@ -111,9 +114,7 @@ package
 		private function onMaskTouchMove(evt:TableViewEvent):void{
 //			vc.showImageWithAnimation(evt.offsetX,evt.offsetY);
 			if(isBigItem){
-				BigImageItem.instance.x += evt.offsetX;
-				BigImageItem.instance.y += evt.offsetY;
-				BigImageItem.instance.restartTimer();
+				BigImageItem.instance.moveImage(evt.offsetX,evt.offsetY);
 			} else {
 				if(!activelayer.contains(moveBitmap))activelayer.addChild(moveBitmap);
 				moveBitmap.x+=evt.offsetX;
@@ -127,12 +128,12 @@ package
 				moveBitmap.bitmapData = null;
 				moveBitmap = null;
 				
-				var nx:int = stage.stageWidth/2-stage.stageWidth/12;
-				var ny:int = stage.stageHeight/2-stage.stageHeight/12;
-				var nw:int = stage.stageWidth/6;
-				var nh:int = stage.stageHeight/6;
+				var nx:int = stage.stageWidth/2-BigImageItem.instance.contentWidth/2;
+				var ny:int = stage.stageHeight/2-BigImageItem.instance.contentHeight/2;
+				var nw:int = BigImageItem.instance.contentWidth;
+				var nh:int = BigImageItem.instance.contentHeight;
 				if(evt.offsetX>=nx&&evt.offsetX<=nx+nw&&evt.offsetY>=ny&&evt.offsetY<=ny+nh){
-					BigImageItem.instance.showImage(moveImageId,stage,activelayer);
+					BigImageItem.instance.showImage(moveImageId,stage,bigitemlayer);
 				}
 			}
 		}
