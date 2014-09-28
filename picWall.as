@@ -14,14 +14,14 @@ package
 		private var imageList:Array = [];
 		private var vc:TableViewController;
 		private var activelayer:Sprite;
-		private var bigitemlayer:Sprite;
+//		private var bigitemlayer:Sprite;
 		private var moveBitmap:Bitmap;
 		private var moveloader:Loader;
 		private var moveImageId:String;
 		private var isBigItem:Boolean;
 		public function picWall()
 		{
-			for(var i:int=1;i<=114;i++){
+			for(var i:int=1;i<=Constants.imageLists.length;i++){
 				imageList.push(i.toString());
 			}
 			
@@ -33,7 +33,7 @@ package
 //			vc.rows = 6;
 //			vc.cols = 10;
 			vc.rows = 9;
-			vc.cols = 12;
+			vc.cols = 15;
 			vc.stage = stage;
 			vc.lists = imageList;
 			addChild(vc.view);
@@ -41,8 +41,8 @@ package
 			activelayer = new Sprite();
 			addChild(activelayer);
 			
-			bigitemlayer = new Sprite();
-			addChild(bigitemlayer);
+//			bigitemlayer = new Sprite();
+//			addChild(bigitemlayer);
 			
 			var mask:TUIOLayer = new TUIOLayer(stage);
 			mask.addEventListener(TableViewEvent.MASKDIDTAPPED, onMaskTapped);
@@ -61,7 +61,7 @@ package
 		}
 		
 		private function onMaskZoom(evt:TableViewEvent):void{
-			if(bigitemlayer.contains(BigImageItem.instance)){
+			if(activelayer.contains(BigImageItem.instance)){
 				BigImageItem.instance.zoomImage(evt);
 //				BigImageItem.instance.scaleX+=evt.deltaScale;
 //				BigImageItem.instance.scaleY+=evt.deltaScale;
@@ -70,7 +70,7 @@ package
 		}
 		
 		private function onItemWillShow(evt:TableViewEvent):void{
-			BigImageItem.instance.showImage(evt.item["imageId"],stage,bigitemlayer);
+			BigImageItem.instance.showImage(evt.item["imageId"],stage,activelayer);
 		}
 		
 		private function tracelog(str:String):void{
@@ -79,7 +79,7 @@ package
 		}
 		
 		private function isInBigItemArea(evt:TableViewEvent):Boolean{
-			if(bigitemlayer.numChildren > 0){
+			if(activelayer.numChildren > 0){
 				var nx:int = BigImageItem.instance.x;
 				var ny:int = BigImageItem.instance.y;
 				var nw:int = BigImageItem.instance.contentWidth;
@@ -133,7 +133,7 @@ package
 				var nw:int = BigImageItem.instance.contentWidth;
 				var nh:int = BigImageItem.instance.contentHeight;
 				if(evt.offsetX>=nx&&evt.offsetX<=nx+nw&&evt.offsetY>=ny&&evt.offsetY<=ny+nh){
-					BigImageItem.instance.showImage(moveImageId,stage,bigitemlayer);
+					BigImageItem.instance.showImage(moveImageId,stage,activelayer);
 				}
 			}
 		}

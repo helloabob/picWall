@@ -124,7 +124,8 @@ package
 
 		public function set imageName(name:String):void{
 //			_fileName = "images/"+name+".jpg";
-			_fileName = Constants.smallImageUrl.replace("{0}",name);
+//			_fileName = Constants.smallImageUrl.replace("{0}",name);
+			_fileName = Constants.getSmallImageName(name);
 //			trace(url);
 			var request:URLRequest=new URLRequest(_fileName);
 			var ld:Loader = new Loader();

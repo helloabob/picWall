@@ -1,5 +1,7 @@
 package
 {
+	import com.greensock.TweenLite;
+	
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -50,6 +52,8 @@ package
 		private var _clickTitle:TextField = new TextField();
 		private var _clsBtn:CloseBtn = new CloseBtn();
 		private var _loveBtn:LoveBtn = new LoveBtn();
+		private var _clickTitleLabel:TextField = new TextField();
+		private var _clickTitleLabel2:TextField = new TextField();
 		
 		private var _is_first_play:Boolean = true;
 		private var _close_timer:Timer = new Timer(60000);
@@ -63,7 +67,8 @@ package
 			_imageLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,oncomp);
 			
 			_whiteBackSprite.graphics.beginFill(0xffffff,1);
-			_whiteBackSprite.graphics.drawRect(0,0,contentWidth,contentHeight);
+//			_whiteBackSprite.graphics.drawRect(0,0,contentWidth,contentHeight);
+			_whiteBackSprite.graphics.drawRoundRect(0,0,contentWidth,contentHeight,10,10);
 			_whiteBackSprite.graphics.endFill();
 			
 			_imageLoader.x = padding;
@@ -83,12 +88,24 @@ package
 			
 			//title properties
 			_title.textColor = 0xffffff;
-			_clickTitle.textColor = 0x000000;
 			var tf:TextFormat = new TextFormat();
 			tf.size = 20;
 			tf.align = TextFormatAlign.LEFT;
 			_title.defaultTextFormat = tf;
 			_title.setTextFormat(tf);
+			
+			tf = new TextFormat();
+			tf.size = 18;
+			_clickTitleLabel.defaultTextFormat = tf;
+			_clickTitleLabel.setTextFormat(tf);
+			_clickTitleLabel2.defaultTextFormat = tf;
+			_clickTitleLabel.setTextFormat(tf);
+			
+			tf = new TextFormat();
+			tf.size = 20;
+			tf.font = "Georgia";
+			_clickTitle.textColor = 0xe43322;
+			tf.align = TextFormatAlign.CENTER;
 			_clickTitle.defaultTextFormat = tf;
 			_clickTitle.setTextFormat(tf);
 			
@@ -97,7 +114,7 @@ package
 			//close button property
 //			_clsBtn.width = 20;
 //			_clsBtn.height = 20;
-			_clsBtn.addEventListener(MouseEvent.CLICK, onClose);
+//			_clsBtn.addEventListener(MouseEvent.CLICK, onClose);
 			
 			drawBackColor(_titleSprite,0x000000,contentWidth-2*padding,titleSpriteHeight);
 			_titleSprite.y = padding+imageHeight-titleSpriteHeight;
@@ -111,8 +128,17 @@ package
 			
 //			_clickTitle.height = 
 			_clickTitle.selectable = false;
-			_clickTitle.x = contentWidth-padding-clickTitleWidth;
+			_clickTitle.text = "99999";
+			_clickTitle.x = contentWidth-padding-clickTitleWidth - 30;
 			_clickTitle.y = contentHeight-padding-30;
+			
+			_clickTitleLabel.x = _clickTitle.x - 50;
+			_clickTitleLabel.y = _clickTitle.y + 5;
+			_clickTitleLabel.text = "共收集";
+			_clickTitleLabel2.x = _clickTitle.x + _clickTitle.width;
+			_clickTitleLabel2.y = _clickTitle.y + 5;
+			_clickTitleLabel2.text = "个赞";
+			
 			
 			addChild(_whiteBackSprite);
 			addChild(_imageLoader);
@@ -120,10 +146,10 @@ package
 			addChild(_titleSprite);
 			addChild(_title);
 			addChild(_clickTitle);
+			addChild(_clickTitleLabel);
+			addChild(_clickTitleLabel2);
 			addChild(_clsBtn);
 			addChild(_loveBtn);
-			
-			
 			
 			
 			
@@ -141,7 +167,7 @@ package
 			}
 			imageCountArray[imageName] = count;
 			
-			_clickTitle.text = "赞次数: "+count;
+			_clickTitle.text = count.toString();
 		}
 		public function zoomImage(evt:TableViewEvent):void{
 			_imageLoader.content.scaleX = evt.deltaX;
@@ -162,6 +188,19 @@ package
 				&&oy<=_clsBtn.x+_clsBtn.height){
 				hideImage();
 			}
+//			else if(ox>=0
+//				&&ox<=20
+//				&&oy>0
+//				&&oy<=20){
+//				_imageLoader.content.scaleX += 0.1;
+//				_imageLoader.content.scaleY += 0.1;
+//			}else if(ox>20
+//				&&ox<=40
+//				&&oy>0
+//				&&oy<=20){
+//				_imageLoader.content.scaleX -= 0.1;
+//				_imageLoader.content.scaleY -= 0.1;
+//			}
 		}
 		public function moveImage(offsetX:int,offsetY:int):void{
 			_imageLoader.x += offsetX;
@@ -190,7 +229,8 @@ package
 				}
 				
 				imageName = imageId;
-				var request:URLRequest=new URLRequest(Constants.bigImageUrl.replace("{0}",imageId));
+//				var request:URLRequest=new URLRequest(Constants.bigImageUrl.replace("{0}",imageId));
+				var request:URLRequest = new URLRequest(Constants.getBigImageName(imageId));
 				_imageLoader.load(request);
 			}
 		}
@@ -202,7 +242,9 @@ package
 			hideImage();
 		}
 		private function hideImage():void{
-			if(_parent.contains(this))_parent.removeChild(this);
+			if(_parent.contains(this)){
+				_parent.removeChild(this);
+			}
 			_close_timer.reset();
 		}
 		private function oncomp(evt:Event):void{
@@ -246,11 +288,15 @@ package
 			if(imageCountArray[imageName]!=null){
 				count = imageCountArray[imageName];
 			}
-			_clickTitle.text = "赞次数: "+count;
+			_clickTitle.text = count.toString();
 
-			_parent.addChild(this);
+			if(!_parent.contains(this)){
+				_parent.addChild(this);
+				/*animation*/
+				this.alpha = 0;
+				TweenLite.to(this,1,{alpha:1});
+			}
 			_close_timer.start();
-			
 		}
 		private function drawBackColor(contain:Sprite,color:uint,wid:int,hei:int):void{
 			contain.graphics.clear();

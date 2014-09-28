@@ -1,11 +1,14 @@
 package
 {
 	import com.lylib.touch.OSMultiTouch;
+	import com.lylib.touch.events.DirectionEvent;
 	import com.lylib.touch.events.ZoomEvent;
+	import com.lylib.touch.gestures.DirectionGesture;
 	import com.lylib.touch.gestures.ZoomGesture;
 	
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.events.GestureEvent;
 	import flash.events.MouseEvent;
 	
 	public class TUIOLayer extends Sprite
@@ -22,10 +25,13 @@ package
 			
 //			this.addEventListener(MouseEvent.CLICK, onClick);
 			this.addEventListener(MouseEvent.MOUSE_DOWN, onDown);
-			multiTouch.enableGesture(this,new ZoomGesture(),onZoomGesture);
+//			multiTouch.enableGesture(this,new ZoomGesture(),onZoomGesture);
+//			multiTouch.enableGesture(this,new DirectionGesture(),onDirectionGesture);
+		}
+		private function onDirectionGesture(evt:DirectionEvent):void{
+			evt.direction
 		}
 		private function onZoomGesture(evt:ZoomEvent):void{
-			trace("zoom @ delta_scale:"+evt.deltaScale);
 			var event:TableViewEvent = new TableViewEvent(TableViewEvent.ITEMDIDZOOM);
 			event.deltaScale = evt.deltaScale;
 			dispatchEvent(event);
