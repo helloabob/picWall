@@ -19,6 +19,7 @@ package
 		private var moveloader:Loader;
 		private var moveImageId:String;
 		private var isBigItem:Boolean;
+		private var canDrag:Boolean;
 		public function picWall()
 		{
 			for(var i:int=1;i<=Constants.imageLists.length;i++){
@@ -54,7 +55,7 @@ package
 			
 			vc.start();
 			
-			
+			canDrag=false;
 //			
 //			stage.addEventListener(TouchEvent.TAP, onTap);
 //			stage.addEventListener(TouchEvent.TOUCH_DOWN,onTouchDown);
@@ -70,6 +71,7 @@ package
 		}
 		
 		private function onItemWillShow(evt:TableViewEvent):void{
+			trace("item:"+evt.item["imageId"]);
 			BigImageItem.instance.showImage(evt.item["imageId"],stage,activelayer);
 		}
 		
@@ -92,37 +94,41 @@ package
 		}
 		
 		private function onMaskTapped(evt:TableViewEvent):void{
+			canDrag=false;
 			if(isInBigItemArea(evt)==false)vc.showImageWithAnimation(evt.offsetX,evt.offsetY);
 			else{
 				BigImageItem.instance.tapImage(evt);
 			}
 		}
 		private function onMaskTouchDown(evt:TableViewEvent):void{
-			isBigItem = isInBigItemArea(evt);
-			if(isBigItem==true)return;
-			
-			var item:ImageItem = vc.getSpriteAtPoint(evt.offsetX,evt.offsetY);if(item==null)return;
-			moveImageId = item.id;
-			var sp:Sprite = item.content;
-			
-			var bmd:BitmapData = new BitmapData(sp.width,sp.height);
-			bmd.draw(sp);
-			moveBitmap = new Bitmap(bmd);
-			moveBitmap.x = evt.offsetX-bmd.width/2;
-			moveBitmap.y = evt.offsetY-bmd.height/2;
+//			isBigItem = isInBigItemArea(evt);
+//			if(isBigItem==true)return;
+			if(isInBigItemArea(evt)==false){
+				var item:MyBitmap = vc.getSpriteAtPoint(evt.offsetX,evt.offsetY);if(item==null)return;
+				moveImageId = item.id;
+	//			var sp:Sprite = item;
+				
+				var bmd:BitmapData = new BitmapData(item.width,item.height);
+				bmd.draw(item);
+				moveBitmap = new Bitmap(bmd);
+				moveBitmap.x = evt.offsetX-bmd.width/2;
+				moveBitmap.y = evt.offsetY-bmd.height/2;
+				canDrag = true;
+			}
 		}
 		private function onMaskTouchMove(evt:TableViewEvent):void{
 //			vc.showImageWithAnimation(evt.offsetX,evt.offsetY);
-			if(isBigItem){
-				BigImageItem.instance.moveImage(evt.offsetX,evt.offsetY);
-			} else {
+//			if(isBigItem){
+//				BigImageItem.instance.moveImage(evt.offsetX,evt.offsetY);
+//			} else {
+			if(canDrag){
 				if(!activelayer.contains(moveBitmap))activelayer.addChild(moveBitmap);
 				moveBitmap.x+=evt.offsetX;
 				moveBitmap.y+=evt.offsetY;
 			}
 		}
 		private function onMaskTouchUp(evt:TableViewEvent):void{
-			if(isBigItem==false){
+			if(canDrag==true){
 				if(activelayer.contains(moveBitmap))activelayer.removeChild(moveBitmap);
 				moveBitmap.bitmapData.dispose();
 				moveBitmap.bitmapData = null;
@@ -135,6 +141,7 @@ package
 				if(evt.offsetX>=nx&&evt.offsetX<=nx+nw&&evt.offsetY>=ny&&evt.offsetY<=ny+nh){
 					BigImageItem.instance.showImage(moveImageId,stage,activelayer);
 				}
+				canDrag=false;
 			}
 		}
 		

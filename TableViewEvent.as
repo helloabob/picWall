@@ -4,6 +4,9 @@ package
 	
 	public class TableViewEvent extends Event
 	{
+		
+		public static var IMAGEDATALOADED:String = "IMAGEDATALOADED";
+		
 		public static var VIEWDIDAPPEAR:String = "VIEWDIDAPPEAR";
 		public static var CELLFORRENDER:String = "CELLFORRENDER";
 		public static var ITEMDIDAPPEAR:String = "ITEMDIDAPPEAR";

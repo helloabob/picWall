@@ -22,7 +22,7 @@ package
 	* padding 15
 	*
 	*/
-	public class BigImageItem extends Sprite
+	public class CopyofBigImageItem extends Sprite
 	{
 		private static var _instance:BigImageItem;
 		public static function get instance():BigImageItem{
@@ -30,10 +30,10 @@ package
 			return _instance;
 		}
 		
-		public var contentWidth:int = 788;
+		public const contentWidth:int = 788;
 		public const contentHeight:int = 517;
 		private const imageHeight:int = 442;
-//		private const imageWidth:int = 758;
+		private const imageWidth:int = 758;
 		private const padding:int = 15;
 		private const lovePadding:int = 40;
 		private const closePadding:int = 30;
@@ -45,19 +45,15 @@ package
 		private var _stage:Stage;
 		
 		private var _whiteBackSprite:Sprite = new Sprite();
-//		private var _imageMask:Sprite = new Sprite();
+		private var _imageMask:Sprite = new Sprite();
 		private var _imageLoader:Loader = new Loader();
 		private var _titleSprite:Sprite = new Sprite();
 		private var _title:TextField = new TextField();
-		private var _viewtitle:TextField = new TextField();
 		private var _clickTitle:TextField = new TextField();
 		private var _clsBtn:CloseBtn = new CloseBtn();
 		private var _loveBtn:LoveBtn = new LoveBtn();
 		private var _clickTitleLabel:TextField = new TextField();
 		private var _clickTitleLabel2:TextField = new TextField();
-		
-		private var _btnBarcode:BarcodeButton = new BarcodeButton();
-		private var _viewBarcode:BarcodeView = new BarcodeView();
 		
 		private var _is_first_play:Boolean = true;
 		private var _close_timer:Timer = new Timer(60000);
@@ -65,40 +61,38 @@ package
 		public var isShowing:Boolean = false;
 		private var imageCountArray:Dictionary=new Dictionary();
 		
-		public function BigImageItem()
+		public function CopyofBigImageItem()
 		{
 			_close_timer.addEventListener(TimerEvent.TIMER, onCloseTimer);
 			_imageLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,oncomp);
 			
-			
+			_whiteBackSprite.graphics.beginFill(0xffffff,1);
+//			_whiteBackSprite.graphics.drawRect(0,0,contentWidth,contentHeight);
+			_whiteBackSprite.graphics.drawRoundRect(0,0,contentWidth,contentHeight,10,10);
+			_whiteBackSprite.graphics.endFill();
 			
 			_imageLoader.x = padding;
 			_imageLoader.y = padding;
-//			_imageLoader.mask = _imageMask;
+			_imageLoader.mask = _imageMask;
 			
-//			_imageMask.graphics.beginFill(0xffffff,0);
-//			_imageMask.graphics.drawRect(0,0,contentWidth-2*padding,imageHeight);
-//			_imageMask.graphics.endFill();
-//			_imageMask.x = padding;
-//			_imageMask.y = padding;
+			_imageMask.graphics.beginFill(0xffffff,0);
+			_imageMask.graphics.drawRect(0,0,contentWidth-2*padding,imageHeight);
+			_imageMask.graphics.endFill();
+			_imageMask.x = padding;
+			_imageMask.y = padding;
 			
 			_loveBtn.x = lovePadding;
 			_loveBtn.y = lovePadding;
+			_clsBtn.x = contentWidth-closePadding-_clsBtn.width;
 			_clsBtn.y = closePadding;
 			
 			//title properties
 			_title.textColor = 0xffffff;
 			var tf:TextFormat = new TextFormat();
-			tf.size = 18;
+			tf.size = 20;
 			tf.align = TextFormatAlign.LEFT;
 			_title.defaultTextFormat = tf;
 			_title.setTextFormat(tf);
-			_title.wordWrap = true;
-			
-//			_viewtitle.defaultTextFormat = tf;
-//			_viewtitle.setTextFormat(tf);
-//			_viewtitle.text = "fsdaaaaaaaaaaafasdfsdf";
-//			_viewtitle.wordWrap = true;
 			
 			tf = new TextFormat();
 			tf.size = 18;
@@ -115,58 +109,47 @@ package
 			_clickTitle.defaultTextFormat = tf;
 			_clickTitle.setTextFormat(tf);
 			
-//			
+			_title.wordWrap = true;
 			
 			//close button property
 //			_clsBtn.width = 20;
 //			_clsBtn.height = 20;
 //			_clsBtn.addEventListener(MouseEvent.CLICK, onClose);
 			
+			drawBackColor(_titleSprite,0x000000,contentWidth-2*padding,titleSpriteHeight);
 			_titleSprite.y = padding+imageHeight-titleSpriteHeight;
 			_titleSprite.x = padding;
 			
-//			_title.height = _titleSprite.height;
+			_title.width = contentWidth-2*padding;
+			_title.height = _titleSprite.height;
 			_title.selectable = false;
 			_title.y = _titleSprite.y;
 			_title.x = _titleSprite.x;
-			_title.width = 400;
 			
-//			_viewtitle.height = _titleSprite.height;
-//			_viewtitle.selectable = false;
-//			_viewtitle.y = _titleSprite.y;
-//			_viewtitle.x = _titleSprite.x;
-//			_viewtitle.width = 400;
-
 //			_clickTitle.height = 
 			_clickTitle.selectable = false;
 			_clickTitle.text = "99999";
+			_clickTitle.x = contentWidth-padding-clickTitleWidth - 30;
 			_clickTitle.y = contentHeight-padding-30;
 			
-			_btnBarcode.x = 50;
-			_btnBarcode.y = contentHeight-padding-_btnBarcode.height + 5;
-			
-			_viewBarcode.x = 40;
-			_viewBarcode.y = _btnBarcode.y-padding-_viewBarcode.height;
-			
-			
+			_clickTitleLabel.x = _clickTitle.x - 50;
 			_clickTitleLabel.y = _clickTitle.y + 5;
 			_clickTitleLabel.text = "共收集";
+			_clickTitleLabel2.x = _clickTitle.x + _clickTitle.width;
 			_clickTitleLabel2.y = _clickTitle.y + 5;
 			_clickTitleLabel2.text = "个赞";
 			
 			
 			addChild(_whiteBackSprite);
 			addChild(_imageLoader);
+			addChild(_imageMask);
 			addChild(_titleSprite);
+			addChild(_title);
 			addChild(_clickTitle);
 			addChild(_clickTitleLabel);
 			addChild(_clickTitleLabel2);
-			addChild(_title);
 			addChild(_clsBtn);
 			addChild(_loveBtn);
-			addChild(_btnBarcode);
-			addChild(_viewBarcode);
-//			addChild(_viewtitle);
 			
 			
 			
@@ -174,35 +157,6 @@ package
 //			this.addEventListener(MouseEvent.MOUSE_DOWN,onStartDrag);
 //			this.addEventListener(MouseEvent.MOUSE_UP,onStopDrag);
 		}
-		
-		private function resizeView(imageWidth:int):void{
-			
-			contentWidth = imageWidth+padding*2;
-			_whiteBackSprite.graphics.clear();
-			_whiteBackSprite.graphics.beginFill(0xffffff,1);
-			_whiteBackSprite.graphics.drawRoundRect(0,0,contentWidth,contentHeight,10,10);
-			_whiteBackSprite.graphics.endFill();
-			
-			_clsBtn.x = contentWidth-closePadding-_clsBtn.width;
-			
-			drawBackColor(_titleSprite,0x000000,contentWidth-2*padding,titleSpriteHeight);
-
-			_title.width = contentWidth-2*padding;
-
-
-			
-			_clickTitle.x = contentWidth-padding-clickTitleWidth - 30;
-			
-			_clickTitleLabel.x = _clickTitle.x - 50;
-			_clickTitleLabel2.x = _clickTitle.x + _clickTitle.width;
-
-			this.x = _stage.stageWidth/2 - contentWidth/2;
-			this.y = _stage.stageHeight/2 - contentHeight/2;
-			
-			
-			trace("x:"+_title.x+" y:"+_title.y);
-		}
-		
 		private function addLoveCount():void{
 			var count:int = 0;
 			if(imageCountArray[imageName]==null){
@@ -223,21 +177,16 @@ package
 		public function tapImage(evt:TableViewEvent):void{
 			var ox:int = evt.offsetX-x;
 			var oy:int = evt.offsetY-y;
-			if(ox>=_loveBtn.x-10
-				&&ox<=_loveBtn.x+_loveBtn.width+10
-				&&oy>=_loveBtn.y-10
-				&&oy<=_loveBtn.y+_loveBtn.height+10){
+			if(ox>=_loveBtn.x
+				&&ox<=_loveBtn.x+_loveBtn.width
+				&&oy>=_loveBtn.y
+				&&oy<=_loveBtn.y+_loveBtn.height){
 				addLoveCount();
-			}else if(ox>=_clsBtn.x-10
-				&&ox<=_clsBtn.x+_clsBtn.width+10
-				&&oy>=_clsBtn.y-10
-				&&oy<=_clsBtn.x+_clsBtn.height+10){
+			}else if(ox>=_clsBtn.x
+				&&ox<=_clsBtn.x+_clsBtn.width
+				&&oy>=_clsBtn.y
+				&&oy<=_clsBtn.x+_clsBtn.height){
 				hideImage();
-			}else if(ox>=_btnBarcode.x-10
-				&&ox<=_btnBarcode.x+_btnBarcode.width+10
-				&&oy>=_btnBarcode.y-10
-				&&oy<=_btnBarcode.y+_btnBarcode.height+10){
-				showBarcode();
 			}
 //			else if(ox>=0
 //				&&ox<=20
@@ -252,11 +201,6 @@ package
 //				_imageLoader.content.scaleX -= 0.1;
 //				_imageLoader.content.scaleY -= 0.1;
 //			}
-		}
-		private function showBarcode():void{
-			if(_viewBarcode.alpha==0)_viewBarcode.alpha = 1;
-			else _viewBarcode.alpha = 0;
-			
 		}
 		public function moveImage(offsetX:int,offsetY:int):void{
 			_imageLoader.x += offsetX;
@@ -280,7 +224,8 @@ package
 				_stage = stg;
 				_parent = par;
 				if(_is_first_play){
-					
+					this.x = _stage.stageWidth/2 - contentWidth/2;
+					this.y = _stage.stageHeight/2 - contentHeight/2;
 				}
 				
 				imageName = imageId;
@@ -310,16 +255,13 @@ package
 			
 			var portion:Number = 442.0/758.0;
 			var new_por:Number = originalHeight/originalWidth;
-//			if(new_por<portion){
-//				newHeight = imageHeight;
-//				newWidth = newHeight/new_por;
-//			}else{
-//				newWidth = imageWidth;
-//				newHeight = newWidth*new_por;
-//			}
-			newHeight = imageHeight;
-			newWidth = imageHeight/new_por;
-			
+			if(new_por<portion){
+				newHeight = imageHeight;
+				newWidth = newHeight/new_por;
+			}else{
+				newWidth = imageWidth;
+				newHeight = newWidth*new_por;
+			}
 //			if(originalWidth>originalHeight){
 //				newWidth = imageSize;
 //				newHeight = Number(imageSize)/originalWidth * originalHeight;
@@ -337,16 +279,10 @@ package
 				_is_first_play = false;
 			}
 			
-			resizeView(newWidth);
-			
-			_viewBarcode.alpha = 0;
-			
 			var blackBackHeight:int = 150;
 			
 			
 			_title.text = "图片简介: "+Constants.imageDescription;
-			
-//			_title.text = "图片简介:";
 			
 			var count:int = 0;
 			if(imageCountArray[imageName]!=null){
@@ -361,7 +297,6 @@ package
 				TweenLite.to(this,1,{alpha:1});
 			}
 			_close_timer.start();
-			
 		}
 		private function drawBackColor(contain:Sprite,color:uint,wid:int,hei:int):void{
 			contain.graphics.clear();
