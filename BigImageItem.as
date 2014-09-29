@@ -67,11 +67,11 @@ package
 		
 		public function BigImageItem()
 		{
+			/*timer add event listener*/
 			_close_timer.addEventListener(TimerEvent.TIMER, onCloseTimer);
+			
+			/*set big image params*/
 			_imageLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,oncomp);
-			
-			
-			
 			_imageLoader.x = padding;
 			_imageLoader.y = padding;
 //			_imageLoader.mask = _imageMask;
@@ -82,6 +82,7 @@ package
 //			_imageMask.x = padding;
 //			_imageMask.y = padding;
 			
+			/*close & love button position*/
 			_loveBtn.x = lovePadding;
 			_loveBtn.y = lovePadding;
 			_clsBtn.y = closePadding;
@@ -175,6 +176,9 @@ package
 //			this.addEventListener(MouseEvent.MOUSE_UP,onStopDrag);
 		}
 		
+		/*
+		 * rearrange the position of all children view
+		*/
 		private function resizeView(imageWidth:int):void{
 			
 			contentWidth = imageWidth+padding*2;
@@ -198,9 +202,6 @@ package
 
 			this.x = _stage.stageWidth/2 - contentWidth/2;
 			this.y = _stage.stageHeight/2 - contentHeight/2;
-			
-			
-			trace("x:"+_title.x+" y:"+_title.y);
 		}
 		
 		private function addLoveCount():void{
@@ -287,7 +288,22 @@ package
 //				var request:URLRequest=new URLRequest(Constants.bigImageUrl.replace("{0}",imageId));
 				var request:URLRequest = new URLRequest(Constants.getBigImageName(imageId));
 				_imageLoader.load(request);
+				
+				/*clear children at viewBarcode*/
+				if(_viewBarcode.numChildren>0)_viewBarcode.removeChildAt(0);
+				
+				/*load barcode image*/
+				var ld:Loader = new Loader();
+				ld.contentLoaderInfo.addEventListener(Event.COMPLETE,onBarcodeComplete);
+				ld.load(new URLRequest(Constants.getBarcodeImageName(imageId)));
+				_viewBarcode.addChild(ld);
 			}
+		}
+		private function onBarcodeComplete(evt:Event):void{
+			var ld:Loader = evt.target.loader;
+			ld.content.width = 137;
+			ld.content.height = 137;
+			ld.contentLoaderInfo.removeEventListener(Event.COMPLETE, onBarcodeComplete);
 		}
 		public function restartTimer():void{
 			_close_timer.reset();
@@ -317,6 +333,8 @@ package
 //				newWidth = imageWidth;
 //				newHeight = newWidth*new_por;
 //			}
+			
+			/*set new width of big image*/
 			newHeight = imageHeight;
 			newWidth = imageHeight/new_por;
 			
@@ -354,9 +372,9 @@ package
 			}
 			_clickTitle.text = count.toString();
 
+			/*animation for show big item*/
 			if(!_parent.contains(this)){
 				_parent.addChild(this);
-				/*animation*/
 				this.alpha = 0;
 				TweenLite.to(this,1,{alpha:1});
 			}
