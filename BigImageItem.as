@@ -195,10 +195,10 @@ package
 
 
 			
-			_clickTitle.x = contentWidth-padding-clickTitleWidth - 30;
+			_clickTitle.x = contentWidth-padding-clickTitleWidth;
 			
-			_clickTitleLabel.x = _clickTitle.x - 50;
-			_clickTitleLabel2.x = _clickTitle.x + _clickTitle.width;
+			_clickTitleLabel.x = _clickTitle.x - 25;
+			_clickTitleLabel2.x = _clickTitle.x + 70;
 
 			this.x = _stage.stageWidth/2 - contentWidth/2;
 			this.y = _stage.stageHeight/2 - contentHeight/2;
@@ -316,6 +316,7 @@ package
 			if(_parent.contains(this)){
 				_parent.removeChild(this);
 			}
+			imageName = null;
 			_close_timer.reset();
 		}
 		private function oncomp(evt:Event):void{

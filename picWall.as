@@ -5,9 +5,11 @@ package
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
+	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
+	import flash.system.fscommand;
 	
-	[SWF(width=1920,height=1080,backgroundColor=0xffffff)]
+	[SWF(width=1920,height=1080,backgroundColor=0xffffff,frameRate=20)]
 //	[SWF(width=800,height=450,backgroundColor=0xffffff)]
 	public class picWall extends Sprite
 	{
@@ -22,12 +24,13 @@ package
 		private var canDrag:Boolean;
 		public function picWall()
 		{
+			flash.system.fscommand("fullscreen","true");
 			for(var i:int=1;i<=Constants.imageLists.length;i++){
 				imageList.push(i.toString());
 			}
 			
 			stage.align = StageAlign.TOP_LEFT;
-			stage.scaleMode=StageScaleMode.EXACT_FIT;
+			stage.scaleMode=StageScaleMode.NO_SCALE;
 			
 			vc = new TableViewController();
 			vc.addEventListener(TableViewEvent.ITEMWILLSHOW, onItemWillShow);
@@ -71,7 +74,7 @@ package
 		}
 		
 		private function onItemWillShow(evt:TableViewEvent):void{
-			trace("item:"+evt.item["imageId"]);
+//			trace("item:"+evt.item["imageId"]);
 			BigImageItem.instance.showImage(evt.item["imageId"],stage,activelayer);
 		}
 		
