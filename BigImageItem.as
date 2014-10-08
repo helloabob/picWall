@@ -160,11 +160,11 @@ package
 			
 			addChild(_whiteBackSprite);
 			addChild(_imageLoader);
-			addChild(_titleSprite);
+//			addChild(_titleSprite);
 			addChild(_clickTitle);
 			addChild(_clickTitleLabel);
 			addChild(_clickTitleLabel2);
-			addChild(_title);
+//			addChild(_title);
 			addChild(_clsBtn);
 			addChild(_loveBtn);
 			addChild(_btnBarcode);
