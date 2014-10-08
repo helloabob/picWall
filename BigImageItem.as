@@ -9,6 +9,8 @@ package
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.net.URLRequest;
+	import flash.system.ImageDecodingPolicy;
+	import flash.system.LoaderContext;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
@@ -287,7 +289,9 @@ package
 				imageName = imageId;
 //				var request:URLRequest=new URLRequest(Constants.bigImageUrl.replace("{0}",imageId));
 				var request:URLRequest = new URLRequest(Constants.getBigImageName(imageId));
-				_imageLoader.load(request);
+				var loaderContext:LoaderContext = new LoaderContext();
+				loaderContext.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
+				_imageLoader.load(request,loaderContext);
 				
 				/*clear children at viewBarcode*/
 				if(_viewBarcode.numChildren>0)_viewBarcode.removeChildAt(0);
