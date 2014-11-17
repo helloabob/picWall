@@ -293,6 +293,10 @@ package
 				loaderContext.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
 				_imageLoader.load(request,loaderContext);
 				
+				/*add animation for bigItem*/
+				this.alpha = 0;
+				/*end*/
+				
 				/*clear children at viewBarcode*/
 				if(_viewBarcode.numChildren>0)_viewBarcode.removeChildAt(0);
 				
@@ -380,9 +384,12 @@ package
 			/*animation for show big item*/
 			if(!_parent.contains(this)){
 				_parent.addChild(this);
-				this.alpha = 0;
-				TweenLite.to(this,1,{alpha:1});
+//				this.alpha = 0;
+				
 			}
+			/*add animation for big item*/
+			TweenLite.to(this,2,{alpha:1});
+			/*end*/
 			_close_timer.start();
 			
 		}
