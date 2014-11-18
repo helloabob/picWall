@@ -16,6 +16,7 @@ package
 	import flash.text.TextFormatAlign;
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
+	import flash.utils.setTimeout;
 	
 	/*global width  788
 	* global height 517
@@ -66,6 +67,8 @@ package
 		
 		public var isShowing:Boolean = false;
 		private var imageCountArray:Dictionary=new Dictionary();
+		
+		private var isAnimation:Boolean = false;
 		
 		public function BigImageItem()
 		{
@@ -277,9 +280,11 @@ package
 //			this.stopDrag();
 //		}
 		public function showImage(imageId:String,stg:Stage,par:Sprite):void{
+			if(isAnimation==true)return;
 			_close_timer.reset();
 			if(imageName!=null&&imageName == imageId)return;
 			else{
+				isAnimation = true;
 				_stage = stg;
 				_parent = par;
 				if(_is_first_play){
@@ -389,9 +394,13 @@ package
 			}
 			/*add animation for big item*/
 			TweenLite.to(this,2,{alpha:1});
+			flash.utils.setTimeout(stopAnimation,2000);
 			/*end*/
 			_close_timer.start();
 			
+		}
+		private function stopAnimation():void{
+			isAnimation = false;
 		}
 		private function drawBackColor(contain:Sprite,color:uint,wid:int,hei:int):void{
 			contain.graphics.clear();

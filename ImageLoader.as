@@ -14,11 +14,7 @@ package
 		private var currentIndex:int = 1;
 		private var loader:Loader = new Loader();
 		
-		/*small model image item height*/
-		private var imageHeight:int = 120;
-		
-		/*big model image item height*/
-		private var bigImageHeight:int = 240;
+		private var imageHeight:int;
 		
 		public function ImageLoader(target:IEventDispatcher=null)
 		{
@@ -35,7 +31,7 @@ package
 			/*resize the image*/
 			var portion:Number = loader.content.width/loader.content.height;
 			
-			imageHeight = 240;
+			imageHeight = Constants.bigImageHeight;
 			
 			/*---big image item area---*/
 			loader.content.height = imageHeight - 10;
@@ -56,7 +52,7 @@ package
 			Constants.memoryBigData[currentIndex.toString()] = bmd;
 			/*---end---*/
 			
-			imageHeight = 120;
+			imageHeight = Constants.smallImageHeight;
 			
 			/*---small image item area---*/
 			loader.content.height = imageHeight - 10;

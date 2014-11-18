@@ -8,6 +8,8 @@ package
 	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
 	import flash.system.fscommand;
+	import flash.utils.setInterval;
+	import flash.utils.setTimeout;
 	
 	[SWF(width=1920,height=1080,backgroundColor=0xffffff,frameRate=20)]
 //	[SWF(width=800,height=450,backgroundColor=0xffffff)]
@@ -22,6 +24,9 @@ package
 		private var moveImageId:String;
 		private var isBigItem:Boolean;
 		private var canDrag:Boolean;
+		private function tt():void{
+			vc.switchModel();
+		}
 		public function picWall()
 		{
 			flash.system.fscommand("fullscreen","true");
@@ -44,6 +49,8 @@ package
 			
 			activelayer = new Sprite();
 			addChild(activelayer);
+			
+//			flash.utils.setInterval(tt,10000);
 			
 //			bigitemlayer = new Sprite();
 //			addChild(bigitemlayer);
