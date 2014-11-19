@@ -48,7 +48,7 @@ package
 		private var _stage:Stage;
 		
 		private var _whiteBackSprite:Sprite = new Sprite();
-//		private var _imageMask:Sprite = new Sprite();
+		private var _imageMask:Sprite = new Sprite();
 		private var _imageLoader:Loader = new Loader();
 		private var _titleSprite:Sprite = new Sprite();
 		private var _title:TextField = new TextField();
@@ -70,6 +70,10 @@ package
 		
 		private var isAnimation:Boolean = false;
 		
+		/*set them when show big image*/
+		private var currentWidth:int = 0;
+		private var currentHeight:int = 0;
+		
 		public function BigImageItem()
 		{
 			/*timer add event listener*/
@@ -79,13 +83,14 @@ package
 			_imageLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,oncomp);
 			_imageLoader.x = padding;
 			_imageLoader.y = padding;
-//			_imageLoader.mask = _imageMask;
+			_imageLoader.mask = _imageMask;
 			
+			/*big image mask*/
 //			_imageMask.graphics.beginFill(0xffffff,0);
 //			_imageMask.graphics.drawRect(0,0,contentWidth-2*padding,imageHeight);
 //			_imageMask.graphics.endFill();
-//			_imageMask.x = padding;
-//			_imageMask.y = padding;
+			_imageMask.x = padding;
+			_imageMask.y = padding;
 			
 			/*close & love button position*/
 			_loveBtn.x = lovePadding;
@@ -163,6 +168,8 @@ package
 			
 			addChild(_whiteBackSprite);
 			addChild(_imageLoader);
+			/*add image mask sprite*/
+			addChild(_imageMask);
 //			addChild(_titleSprite);
 			addChild(_clickTitle);
 			addChild(_clickTitleLabel);
@@ -222,8 +229,12 @@ package
 			_clickTitle.text = count.toString();
 		}
 		public function zoomImage(evt:TableViewEvent):void{
-			_imageLoader.content.scaleX = evt.deltaX;
-			_imageLoader.content.scaleY = evt.deltaY;
+			if(_imageLoader.content.width <= currentWidth||
+				_imageLoader.content.height <= currentHeight){
+				return;
+			}
+			_imageLoader.content.scaleX *= evt.deltaScale;
+			_imageLoader.content.scaleY *= evt.deltaScale;
 			this.restartTimer();
 		}
 		public function tapImage(evt:TableViewEvent):void{
@@ -233,16 +244,19 @@ package
 				&&ox<=_loveBtn.x+_loveBtn.width+10
 				&&oy>=_loveBtn.y-10
 				&&oy<=_loveBtn.y+_loveBtn.height+10){
+				/*love button*/
 				addLoveCount();
 			}else if(ox>=_clsBtn.x-10
 				&&ox<=_clsBtn.x+_clsBtn.width+10
 				&&oy>=_clsBtn.y-10
 				&&oy<=_clsBtn.x+_clsBtn.height+10){
+				/*close button*/
 				hideImage();
 			}else if(ox>=_btnBarcode.x-10
 				&&ox<=_btnBarcode.x+_btnBarcode.width+10
 				&&oy>=_btnBarcode.y-10
 				&&oy<=_btnBarcode.y+_btnBarcode.height+10){
+				/*show barcode button*/
 				showBarcode();
 			}
 //			else if(ox>=0
@@ -360,26 +374,33 @@ package
 //				newWidth = Number(imageSize)/originalHeight * originalWidth;
 //			}
 			
+			/*resize big image*/
 			_imageLoader.x = padding;
 			_imageLoader.y = padding;
 			_imageLoader.content.height = newHeight;
 			_imageLoader.content.width = newWidth;
-			if(_is_first_play){
-				
+			
+			/*reset current width and height*/
+			currentWidth = newWidth;
+			currentHeight = newHeight;
+			
+			/*resize image mask*/
+			_imageMask.x = padding;
+			_imageMask.y = padding;
+			_imageMask.graphics.clear();
+			_imageMask.graphics.beginFill(0xffffff,0);
+			_imageMask.graphics.drawRect(0,0,newWidth,newHeight);
+			_imageMask.graphics.endFill();
+			
+			if(_is_first_play){	
 				_is_first_play = false;
 			}
 			
 			resizeView(newWidth);
-			
 			_viewBarcode.alpha = 0;
-			
 			var blackBackHeight:int = 150;
 			
-			
 			_title.text = "图片简介: "+Constants.imageDescription;
-			
-//			_title.text = "图片简介:";
-			
 			var count:int = 0;
 			if(imageCountArray[imageName]!=null){
 				count = imageCountArray[imageName];
@@ -390,7 +411,6 @@ package
 			if(!_parent.contains(this)){
 				_parent.addChild(this);
 //				this.alpha = 0;
-				
 			}
 			/*add animation for big item*/
 			TweenLite.to(this,2,{alpha:1});

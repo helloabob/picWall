@@ -24,7 +24,7 @@ package
 		private var moveImageId:String;
 		private var isBigItem:Boolean;
 		private var canDrag:Boolean;
-		private function tt():void{
+		private function switchModeTrigger():void{
 			vc.switchModel();
 		}
 		public function picWall()
@@ -50,7 +50,8 @@ package
 			activelayer = new Sprite();
 			addChild(activelayer);
 			
-//			flash.utils.setInterval(tt,10000);
+			/*switch vc model interval*/
+			flash.utils.setInterval(switchModeTrigger,120000);
 			
 //			bigitemlayer = new Sprite();
 //			addChild(bigitemlayer);
@@ -74,9 +75,6 @@ package
 		private function onMaskZoom(evt:TableViewEvent):void{
 			if(activelayer.contains(BigImageItem.instance)){
 				BigImageItem.instance.zoomImage(evt);
-//				BigImageItem.instance.scaleX+=evt.deltaScale;
-//				BigImageItem.instance.scaleY+=evt.deltaScale;
-//				BigImageItem.instance.restartTimer();
 			}
 		}
 		

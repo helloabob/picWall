@@ -25,7 +25,7 @@ package
 			
 //			this.addEventListener(MouseEvent.CLICK, onClick);
 			this.addEventListener(MouseEvent.MOUSE_DOWN, onDown);
-//			multiTouch.enableGesture(this,new ZoomGesture(),onZoomGesture);
+			multiTouch.enableGesture(this,new ZoomGesture(),onZoomGesture);
 //			multiTouch.enableGesture(this,new DirectionGesture(),onDirectionGesture);
 		}
 		private function onDirectionGesture(evt:DirectionEvent):void{
