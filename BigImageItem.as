@@ -229,12 +229,17 @@ package
 			_clickTitle.text = count.toString();
 		}
 		public function zoomImage(evt:TableViewEvent):void{
-			if(_imageLoader.content.width <= currentWidth||
-				_imageLoader.content.height <= currentHeight){
-				return;
-			}
+			/*1~8 bits allow*/
+			if(_imageLoader.content.width*evt.deltaScale < currentWidth){
+				_imageLoader.content.width = currentWidth;
+				_imageLoader.content.height = currentHeight;
+			}else if(_imageLoader.content.width*evt.deltaScale > 8*currentWidth){
+				_imageLoader.content.width = 8 * currentWidth;
+				_imageLoader.content.height = 8 * currentHeight;
+			}else{
 			_imageLoader.content.scaleX *= evt.deltaScale;
 			_imageLoader.content.scaleY *= evt.deltaScale;
+			}
 			this.restartTimer();
 		}
 		public function tapImage(evt:TableViewEvent):void{
@@ -279,8 +284,27 @@ package
 			
 		}
 		public function moveImage(offsetX:int,offsetY:int):void{
-			_imageLoader.x += offsetX;
-			_imageLoader.y += offsetY;
+			var flagX:Boolean = true;
+			var flagY:Boolean = true;
+			if(_imageLoader.x + offsetX > padding){
+				_imageLoader.x = padding;
+				flagX = false;
+			}
+			if(_imageLoader.y + offsetY > padding){
+				_imageLoader.y = padding;
+				flagY = false;
+			}
+			if(_imageLoader.x + _imageLoader.content.width + offsetX < currentWidth + padding){
+				_imageLoader.x = currentWidth + padding - _imageLoader.content.width;
+				flagX = false;
+			}
+			if(_imageLoader.y + _imageLoader.content.height + offsetY < currentHeight + padding){
+				_imageLoader.y = currentHeight + padding - _imageLoader.content.height;
+				flagY = false;
+			}
+			
+			if(flagX==true)_imageLoader.x += offsetX;
+			if(flagY==true)_imageLoader.y += offsetY;
 			this.restartTimer();
 		}
 		private function onClose(evt:MouseEvent):void{
@@ -413,8 +437,8 @@ package
 //				this.alpha = 0;
 			}
 			/*add animation for big item*/
-			TweenLite.to(this,2,{alpha:1});
-			flash.utils.setTimeout(stopAnimation,2000);
+			TweenLite.to(this,Constants.appearAnimationDuration,{alpha:1});
+			flash.utils.setTimeout(stopAnimation,Constants.appearAnimationDuration*1000);
 			/*end*/
 			_close_timer.start();
 			

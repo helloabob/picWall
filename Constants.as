@@ -24,6 +24,8 @@ package
 		public static var smallImageHeight:int = 120;
 		public static var bigImageHeight:int = 180;
 		
+		public static var appearAnimationDuration:int = 2;
+		
 		public function Constants()
 		{
 		}

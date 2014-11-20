@@ -7,6 +7,7 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
+	import flash.events.MouseEvent;
 	import flash.system.fscommand;
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
@@ -51,7 +52,7 @@ package
 			addChild(activelayer);
 			
 			/*switch vc model interval*/
-			flash.utils.setInterval(switchModeTrigger,120000);
+			flash.utils.setInterval(switchModeTrigger,10000);
 			
 //			bigitemlayer = new Sprite();
 //			addChild(bigitemlayer);
@@ -67,9 +68,34 @@ package
 			vc.start();
 			
 			canDrag=false;
+			
+			/*test zoom function*/
+			var sp:Sprite = new Sprite();
+			sp.graphics.beginFill(0xff0000,1);
+			sp.graphics.drawRect(20,20,50,50);
+			sp.graphics.endFill();
+			sp.addEventListener(MouseEvent.CLICK, onZoom1);
+			addChild(sp);
+			
+			sp = new Sprite();
+			sp.graphics.beginFill(0x00ffff,1);
+			sp.graphics.drawRect(100,20,50,50);
+			sp.graphics.endFill();
+			sp.addEventListener(MouseEvent.CLICK, onZoom2);
+			addChild(sp);
 //			
 //			stage.addEventListener(TouchEvent.TAP, onTap);
 //			stage.addEventListener(TouchEvent.TOUCH_DOWN,onTouchDown);
+		}
+		private function onZoom1(evt:MouseEvent):void{
+			var event:TableViewEvent = new TableViewEvent(TableViewEvent.ITEMDIDZOOM);
+			event.deltaScale = 1.1;
+			onMaskZoom(event);
+		}
+		private function onZoom2(evt:MouseEvent):void{
+			var event:TableViewEvent = new TableViewEvent(TableViewEvent.ITEMDIDZOOM);
+			event.deltaScale = 0.9;
+			onMaskZoom(event);
 		}
 		
 		private function onMaskZoom(evt:TableViewEvent):void{
@@ -109,45 +135,55 @@ package
 			}
 		}
 		private function onMaskTouchDown(evt:TableViewEvent):void{
-//			isBigItem = isInBigItemArea(evt);
-//			if(isBigItem==true)return;
-			if(isInBigItemArea(evt)==false){
+			if(canDrag==true)return;
+			isBigItem = isInBigItemArea(evt);
+			
+			if(isBigItem==false){
+				/*drag small image*/
 				var item:MyBitmap = vc.getSpriteAtPoint(evt.offsetX,evt.offsetY);if(item==null)return;
 				moveImageId = item.id;
-	//			var sp:Sprite = item;
-				
 				var bmd:BitmapData = new BitmapData(item.width,item.height);
 				bmd.draw(item);
+				/*remove child when there is another move sprite dragging*/
+				if(moveBitmap&&activelayer.contains(moveBitmap)){
+					activelayer.removeChild(moveBitmap);
+				}
 				moveBitmap = new Bitmap(bmd);
 				moveBitmap.x = evt.offsetX-bmd.width/2;
 				moveBitmap.y = evt.offsetY-bmd.height/2;
+				canDrag = true;
+			}else{
+				/*drag big image*/
 				canDrag = true;
 			}
 		}
 		private function onMaskTouchMove(evt:TableViewEvent):void{
 //			vc.showImageWithAnimation(evt.offsetX,evt.offsetY);
-//			if(isBigItem){
-//				BigImageItem.instance.moveImage(evt.offsetX,evt.offsetY);
-//			} else {
 			if(canDrag){
-				if(!activelayer.contains(moveBitmap))activelayer.addChild(moveBitmap);
-				moveBitmap.x+=evt.offsetX;
-				moveBitmap.y+=evt.offsetY;
+				if(isBigItem){
+					BigImageItem.instance.moveImage(evt.offsetX,evt.offsetY);
+				} else {
+					if(!activelayer.contains(moveBitmap))activelayer.addChild(moveBitmap);
+					moveBitmap.x+=evt.offsetX;
+					moveBitmap.y+=evt.offsetY;
+				}
 			}
 		}
 		private function onMaskTouchUp(evt:TableViewEvent):void{
 			if(canDrag==true){
-				if(activelayer.contains(moveBitmap))activelayer.removeChild(moveBitmap);
-				moveBitmap.bitmapData.dispose();
-				moveBitmap.bitmapData = null;
-				moveBitmap = null;
-				
-				var nx:int = stage.stageWidth/2-BigImageItem.instance.contentWidth/2;
-				var ny:int = stage.stageHeight/2-BigImageItem.instance.contentHeight/2;
-				var nw:int = BigImageItem.instance.contentWidth;
-				var nh:int = BigImageItem.instance.contentHeight;
-				if(evt.offsetX>=nx&&evt.offsetX<=nx+nw&&evt.offsetY>=ny&&evt.offsetY<=ny+nh){
-					BigImageItem.instance.showImage(moveImageId,stage,activelayer);
+				if(isBigItem==false){
+					if(activelayer.contains(moveBitmap))activelayer.removeChild(moveBitmap);
+					moveBitmap.bitmapData.dispose();
+					moveBitmap.bitmapData = null;
+					moveBitmap = null;
+					
+					var nx:int = stage.stageWidth/2-BigImageItem.instance.contentWidth/2;
+					var ny:int = stage.stageHeight/2-BigImageItem.instance.contentHeight/2;
+					var nw:int = BigImageItem.instance.contentWidth;
+					var nh:int = BigImageItem.instance.contentHeight;
+					if(evt.offsetX>=nx&&evt.offsetX<=nx+nw&&evt.offsetY>=ny&&evt.offsetY<=ny+nh){
+						BigImageItem.instance.showImage(moveImageId,stage,activelayer);
+					}
 				}
 				canDrag=false;
 			}
