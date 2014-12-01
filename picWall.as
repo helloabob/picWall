@@ -70,19 +70,19 @@ package
 			canDrag=false;
 			
 			/*test zoom function*/
-			var sp:Sprite = new Sprite();
-			sp.graphics.beginFill(0xff0000,1);
-			sp.graphics.drawRect(20,20,50,50);
-			sp.graphics.endFill();
-			sp.addEventListener(MouseEvent.CLICK, onZoom1);
-			addChild(sp);
-			
-			sp = new Sprite();
-			sp.graphics.beginFill(0x00ffff,1);
-			sp.graphics.drawRect(100,20,50,50);
-			sp.graphics.endFill();
-			sp.addEventListener(MouseEvent.CLICK, onZoom2);
-			addChild(sp);
+//			var sp:Sprite = new Sprite();
+//			sp.graphics.beginFill(0xff0000,1);
+//			sp.graphics.drawRect(20,20,50,50);
+//			sp.graphics.endFill();
+//			sp.addEventListener(MouseEvent.CLICK, onZoom1);
+//			addChild(sp);
+//			
+//			sp = new Sprite();
+//			sp.graphics.beginFill(0x00ffff,1);
+//			sp.graphics.drawRect(100,20,50,50);
+//			sp.graphics.endFill();
+//			sp.addEventListener(MouseEvent.CLICK, onZoom2);
+//			addChild(sp);
 //			
 //			stage.addEventListener(TouchEvent.TAP, onTap);
 //			stage.addEventListener(TouchEvent.TOUCH_DOWN,onTouchDown);
