@@ -369,6 +369,7 @@ package
 			}
 			imageName = null;
 			_close_timer.reset();
+			dispatchEvent(new TableViewEvent(TableViewEvent.ITEMDIDHIDE));
 		}
 		private function oncomp(evt:Event):void{
 			var loader:Loader = evt.target.loader
@@ -442,6 +443,11 @@ package
 			/*end*/
 			_close_timer.start();
 			
+			/*dispatch itemDidShow event to notify picWall to show arrow button*/
+			var event:TableViewEvent = new TableViewEvent(TableViewEvent.ITEMDIDSHOW);
+			event.offsetX = newWidth;
+			event.offsetY = newHeight;
+			dispatchEvent(event);
 		}
 		private function stopAnimation():void{
 			isAnimation = false;

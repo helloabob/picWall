@@ -1,5 +1,7 @@
 package
 {
+	import com.greensock.TweenLite;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
@@ -25,6 +27,11 @@ package
 		private var moveImageId:String;
 		private var isBigItem:Boolean;
 		private var canDrag:Boolean;
+		
+		/*left and right button for switch big image*/
+		private var btnLeftArrow:Sprite;
+		private var btnRightArrow:Sprite;
+		
 		private function switchModeTrigger():void{
 			vc.switchModel();
 		}
@@ -38,11 +45,18 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode=StageScaleMode.NO_SCALE;
 			
+			/*----------for line environment-------attention:reset swf size at Class Definition Area---*/
+//			Constants.totalRowsForNormal = 18;
+//			Constants.totalRowsForLarge = 12;
+//			Constants.smallImageHeight = stage.stageHeight/Constants.totalRowsForNormal;
+//			Constants.bigImageHeight = stage.stageHeight/Constants.totalRowsForLarge;
+			/*----------end------------*/
+			
 			vc = new TableViewController();
 			vc.addEventListener(TableViewEvent.ITEMWILLSHOW, onItemWillShow);
 //			vc.rows = 6;
 //			vc.cols = 10;
-			vc.rows = 9;
+			vc.rows = Constants.totalRowsForNormal;
 			vc.cols = 15;
 			vc.stage = stage;
 			vc.lists = imageList;
@@ -65,9 +79,15 @@ package
 			mask.addEventListener(TableViewEvent.ITEMDIDZOOM, onMaskZoom);
 			addChild(mask);
 			
+			BigImageItem.instance.addEventListener(TableViewEvent.ITEMDIDSHOW, onItemDidShow);
+			BigImageItem.instance.addEventListener(TableViewEvent.ITEMDIDHIDE, onItemDidHide);
+			
 			vc.start();
 			
 			canDrag=false;
+			
+			btnLeftArrow = new BtnLeft();
+			btnRightArrow = new BtnRight();
 			
 			/*test zoom function*/
 //			var sp:Sprite = new Sprite();
@@ -104,9 +124,39 @@ package
 			}
 		}
 		
+		/*it is called when big item prepare to show from TableViewController.as*/
 		private function onItemWillShow(evt:TableViewEvent):void{
 //			trace("item:"+evt.item["imageId"]);
 			BigImageItem.instance.showImage(evt.item["imageId"],stage,activelayer);
+		}
+		
+		/*it is called when big image start to show with animation from BigImageItem.as*/
+		private function onItemDidShow(evt:TableViewEvent):void{
+			var btn_padding:int = 40;
+			/*left arrow button*/
+			var b_x:int = stage.stageWidth/2 - evt.offsetX/2 - btn_padding - btnLeftArrow.width;
+			var b_y:int = stage.stageHeight/2 - btnLeftArrow.height/2;
+			btnLeftArrow.x = b_x;
+			btnLeftArrow.y = b_y;
+
+			/*right arrow button*/
+			b_x = stage.stageWidth/2 + evt.offsetX/2 + btn_padding;
+			btnRightArrow.x = b_x;
+			btnRightArrow.y = b_y;
+			
+			/*start animation for buttons*/
+			btnLeftArrow.alpha = 0;
+			btnRightArrow.alpha = 0;
+			activelayer.addChild(btnLeftArrow);
+			activelayer.addChild(btnRightArrow);
+			TweenLite.to(btnLeftArrow,Constants.appearAnimationDuration,{alpha:1});
+			TweenLite.to(btnRightArrow,Constants.appearAnimationDuration,{alpha:1});
+		}
+		
+		/*it is called when big image start to hiden from BigImageItem.as*/
+		private function onItemDidHide(evt:TableViewEvent):void{
+			if(activelayer.contains(btnLeftArrow))activelayer.removeChild(btnLeftArrow);
+			if(activelayer.contains(btnRightArrow))activelayer.removeChild(btnRightArrow);
 		}
 		
 		private function tracelog(str:String):void{
@@ -127,9 +177,35 @@ package
 			return false;
 		}
 		
+		private function rectGetMaxX(src:Sprite):int{
+			return src.x + src.width;
+		}
+		private function rectGetMaxY(src:Sprite):int{
+			return src.y + src.height;
+		}
+		
 		private function onMaskTapped(evt:TableViewEvent):void{
 			canDrag=false;
-			if(isInBigItemArea(evt)==false)vc.showImageWithAnimation(evt.offsetX,evt.offsetY);
+			if(isInBigItemArea(evt)==false){
+				if(activelayer.contains(btnLeftArrow)){
+					var nx:int = evt.offsetX;
+					var ny:int = evt.offsetY;
+					if(nx>=btnLeftArrow.x-10
+						&&nx<=rectGetMaxX(btnLeftArrow)+10
+						&&ny>=btnLeftArrow.y-10
+						&&ny<=rectGetMaxY(btnRightArrow)+10){
+						vc.stepImageIndex(-1);
+						return;
+					}else if(nx>=btnRightArrow.x-10
+						&&nx<=rectGetMaxX(btnRightArrow)+10
+						&&ny>=btnRightArrow.y-10
+						&&ny<=rectGetMaxY(btnRightArrow)+10){
+						vc.stepImageIndex(1);
+						return;
+					}
+				}
+				vc.showImageWithAnimation(evt.offsetX,evt.offsetY);
+			}
 			else{
 				BigImageItem.instance.tapImage(evt);
 			}
@@ -158,7 +234,6 @@ package
 			}
 		}
 		private function onMaskTouchMove(evt:TableViewEvent):void{
-//			vc.showImageWithAnimation(evt.offsetX,evt.offsetY);
 			if(canDrag){
 				if(isBigItem){
 					BigImageItem.instance.moveImage(evt.offsetX,evt.offsetY);

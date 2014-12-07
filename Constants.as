@@ -5,6 +5,9 @@ package
 	public class Constants
 	{
 		
+		public static var totalRowsForNormal:int = 9;
+		public static var totalRowsForLarge:int = 6;
+		
 		public static const horizontalPadding:int = 5;
 		public static const verticalPadding:int = 5;
 		public static const pixelPerTime:int = 1;
@@ -24,6 +27,7 @@ package
 		public static var smallImageHeight:int = 120;
 		public static var bigImageHeight:int = 180;
 		
+		/*duration for appearing animation*/
 		public static var appearAnimationDuration:int = 2;
 		
 		public function Constants()

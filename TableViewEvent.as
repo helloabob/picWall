@@ -18,6 +18,9 @@ package
 		
 		public static var ITEMDIDZOOM:String   = "ITEMDIDZOOM";
 		
+		public static var ITEMDIDSHOW:String   = "ITEMDIDSHOW";
+		public static var ITEMDIDHIDE:String   = "ITEMDIDHIDE";
+		
 		public var rowIndex:int;
 		public var colIndex:int;
 		public var itemWidth:int;
