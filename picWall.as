@@ -9,12 +9,16 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.system.fscommand;
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 	
-	[SWF(width=1920,height=1080,backgroundColor=0xffffff,frameRate=20)]
+//	[SWF(width=1920,height=1080,backgroundColor=0xffffff,frameRate=20)]
+	[SWF(width=1280,height=720,backgroundColor=0xffffff,frameRate=20)]
 //	[SWF(width=800,height=450,backgroundColor=0xffffff)]
 	public class picWall extends Sprite
 	{
@@ -34,42 +38,57 @@ package
 		
 		private function switchModeTrigger():void{
 			vc.switchModel();
+			vc.view.alpha = 0;
+			TweenLite.to(vc.view,Constants.appearAnimationDuration,{alpha:1});
 		}
 		public function picWall()
 		{
 			flash.system.fscommand("fullscreen","true");
-			for(var i:int=1;i<=Constants.imageLists.length;i++){
-				imageList.push(i.toString());
-			}
-			
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode=StageScaleMode.NO_SCALE;
 			
+			/*load image list txt module*/
+			var txt_loader:URLLoader = new URLLoader(new URLRequest("imageList.txt"));
+			txt_loader.addEventListener(Event.COMPLETE, on_txt_complete);
+			function on_txt_complete(evt:Event):void{
+				var content:String = String(evt.target.data);
+				Constants.imageLists = content.split(",");
+				evt.target.removeEventListener(Event.COMPLETE, on_txt_complete);
+				initControl();
+			}
+		}
+		private function initControl():void{
+//			for(var i:int=1;i<=Constants.imageLists.length;i++){
+//				imageList.push(i.toString());
+//			}
+			
+			
+			
 			/*----------for line environment-------attention:reset swf size at Class Definition Area---*/
-//			Constants.totalRowsForNormal = 18;
-//			Constants.totalRowsForLarge = 12;
-//			Constants.smallImageHeight = stage.stageHeight/Constants.totalRowsForNormal;
-//			Constants.bigImageHeight = stage.stageHeight/Constants.totalRowsForLarge;
+			//			Constants.totalRowsForNormal = 18;
+			//			Constants.totalRowsForLarge = 12;
+			//			Constants.smallImageHeight = stage.stageHeight/Constants.totalRowsForNormal;
+			//			Constants.bigImageHeight = stage.stageHeight/Constants.totalRowsForLarge;
 			/*----------end------------*/
 			
 			vc = new TableViewController();
 			vc.addEventListener(TableViewEvent.ITEMWILLSHOW, onItemWillShow);
-//			vc.rows = 6;
-//			vc.cols = 10;
+			//			vc.rows = 6;
+			//			vc.cols = 10;
 			vc.rows = Constants.totalRowsForNormal;
 			vc.cols = 15;
 			vc.stage = stage;
-			vc.lists = imageList;
+			vc.lists = Constants.imageLists;
 			addChild(vc.view);
 			
 			activelayer = new Sprite();
 			addChild(activelayer);
 			
 			/*switch vc model interval*/
-			flash.utils.setInterval(switchModeTrigger,10000);
+			flash.utils.setInterval(switchModeTrigger,40000);
 			
-//			bigitemlayer = new Sprite();
-//			addChild(bigitemlayer);
+			//			bigitemlayer = new Sprite();
+			//			addChild(bigitemlayer);
 			
 			var mask:TUIOLayer = new TUIOLayer(stage);
 			mask.addEventListener(TableViewEvent.MASKDIDTAPPED, onMaskTapped);
@@ -90,22 +109,22 @@ package
 			btnRightArrow = new BtnRight();
 			
 			/*test zoom function*/
-//			var sp:Sprite = new Sprite();
-//			sp.graphics.beginFill(0xff0000,1);
-//			sp.graphics.drawRect(20,20,50,50);
-//			sp.graphics.endFill();
-//			sp.addEventListener(MouseEvent.CLICK, onZoom1);
-//			addChild(sp);
-//			
-//			sp = new Sprite();
-//			sp.graphics.beginFill(0x00ffff,1);
-//			sp.graphics.drawRect(100,20,50,50);
-//			sp.graphics.endFill();
-//			sp.addEventListener(MouseEvent.CLICK, onZoom2);
-//			addChild(sp);
-//			
-//			stage.addEventListener(TouchEvent.TAP, onTap);
-//			stage.addEventListener(TouchEvent.TOUCH_DOWN,onTouchDown);
+			//			var sp:Sprite = new Sprite();
+			//			sp.graphics.beginFill(0xff0000,1);
+			//			sp.graphics.drawRect(20,20,50,50);
+			//			sp.graphics.endFill();
+			//			sp.addEventListener(MouseEvent.CLICK, onZoom1);
+			//			addChild(sp);
+			//			
+			//			sp = new Sprite();
+			//			sp.graphics.beginFill(0x00ffff,1);
+			//			sp.graphics.drawRect(100,20,50,50);
+			//			sp.graphics.endFill();
+			//			sp.addEventListener(MouseEvent.CLICK, onZoom2);
+			//			addChild(sp);
+			//			
+			//			stage.addEventListener(TouchEvent.TAP, onTap);
+			//			stage.addEventListener(TouchEvent.TOUCH_DOWN,onTouchDown);
 		}
 		private function onZoom1(evt:MouseEvent):void{
 			var event:TableViewEvent = new TableViewEvent(TableViewEvent.ITEMDIDZOOM);

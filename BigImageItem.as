@@ -160,10 +160,13 @@ package
 			_viewBarcode.y = _btnBarcode.y-padding-_viewBarcode.height;
 			
 			
+			/*modify click title label 20141213*/
 			_clickTitleLabel.y = _clickTitle.y + 5;
-			_clickTitleLabel.text = "共收集";
+//			_clickTitleLabel.text = "共收集";
+			_clickTitleLabel.text = "  共有";
 			_clickTitleLabel2.y = _clickTitle.y + 5;
-			_clickTitleLabel2.text = "个赞";
+//			_clickTitleLabel2.text = "个赞";
+			_clickTitleLabel2.text = "人喜欢";
 			
 			
 			addChild(_whiteBackSprite);
