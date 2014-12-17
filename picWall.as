@@ -17,8 +17,8 @@ package
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 	
-//	[SWF(width=1920,height=1080,backgroundColor=0xffffff,frameRate=20)]
-	[SWF(width=1280,height=720,backgroundColor=0xffffff,frameRate=20)]
+	[SWF(width=1920,height=1080,backgroundColor=0xffffff,frameRate=20)]
+//	[SWF(width=1280,height=720,backgroundColor=0xffffff,frameRate=20)]
 //	[SWF(width=800,height=450,backgroundColor=0xffffff)]
 	public class picWall extends Sprite
 	{
@@ -85,7 +85,7 @@ package
 			addChild(activelayer);
 			
 			/*switch vc model interval*/
-			flash.utils.setInterval(switchModeTrigger,40000);
+			flash.utils.setInterval(switchModeTrigger,30000);
 			
 			//			bigitemlayer = new Sprite();
 			//			addChild(bigitemlayer);
@@ -212,7 +212,7 @@ package
 					if(nx>=btnLeftArrow.x-10
 						&&nx<=rectGetMaxX(btnLeftArrow)+10
 						&&ny>=btnLeftArrow.y-10
-						&&ny<=rectGetMaxY(btnRightArrow)+10){
+						&&ny<=rectGetMaxY(btnLeftArrow)+10){
 						vc.stepImageIndex(-1);
 						return;
 					}else if(nx>=btnRightArrow.x-10

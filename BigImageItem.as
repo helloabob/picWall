@@ -98,9 +98,9 @@ package
 			_clsBtn.y = closePadding;
 			
 			//title properties
-			_title.textColor = 0xffffff;
+			_title.textColor = 0x000000;
 			var tf:TextFormat = new TextFormat();
-			tf.size = 18;
+			tf.size = 16;
 			tf.align = TextFormatAlign.LEFT;
 			_title.defaultTextFormat = tf;
 			_title.setTextFormat(tf);
@@ -140,7 +140,7 @@ package
 			_title.selectable = false;
 			_title.y = _titleSprite.y;
 			_title.x = _titleSprite.x;
-			_title.width = 400;
+			_title.width = 300;
 			
 //			_viewtitle.height = _titleSprite.height;
 //			_viewtitle.selectable = false;
@@ -155,6 +155,9 @@ package
 			
 			_btnBarcode.x = 50;
 			_btnBarcode.y = contentHeight-padding-_btnBarcode.height + 5;
+			
+			_title.x = _btnBarcode.x+_btnBarcode.width+20;
+			_title.y = _btnBarcode.y+10;
 			
 			_viewBarcode.x = 40;
 			_viewBarcode.y = _btnBarcode.y-padding-_viewBarcode.height;
@@ -177,7 +180,7 @@ package
 			addChild(_clickTitle);
 			addChild(_clickTitleLabel);
 			addChild(_clickTitleLabel2);
-//			addChild(_title);
+			addChild(_title);
 			addChild(_clsBtn);
 			addChild(_loveBtn);
 			addChild(_btnBarcode);
@@ -206,7 +209,7 @@ package
 			
 			drawBackColor(_titleSprite,0x000000,contentWidth-2*padding,titleSpriteHeight);
 
-			_title.width = contentWidth-2*padding;
+//			_title.width = contentWidth-2*padding;
 
 
 			
@@ -428,7 +431,9 @@ package
 			_viewBarcode.alpha = 0;
 			var blackBackHeight:int = 150;
 			
-			_title.text = "图片简介: "+Constants.imageDescription;
+//			_title.text = "图片简介: "+Constants.imageDescription;
+			_title.text = Constants.imageLists[int(imageName)-1];
+			trace("title:"+Constants.imageLists[int(imageName)-1]);
 			var count:int = 0;
 			if(imageCountArray[imageName]!=null){
 				count = imageCountArray[imageName];

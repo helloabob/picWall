@@ -25,7 +25,7 @@ package
 			loadItem();
 		}
 		private function loadItem():void{
-			loader.load(new URLRequest(Constants.getSmallImageName(currentIndex.toString())));
+			loader.load(new URLRequest(Constants.getBigImageName(currentIndex.toString())));
 		}
 		private function oncomp(evt:Event):void{
 			/*resize the image*/
