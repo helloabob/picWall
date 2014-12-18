@@ -101,7 +101,7 @@ package
 			BigImageItem.instance.addEventListener(TableViewEvent.ITEMDIDSHOW, onItemDidShow);
 			BigImageItem.instance.addEventListener(TableViewEvent.ITEMDIDHIDE, onItemDidHide);
 			
-			vc.start();
+//			vc.start();
 			
 			canDrag=false;
 			

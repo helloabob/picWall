@@ -19,8 +19,10 @@ package
 		private var multiTouch:OSMultiTouch = OSMultiTouch.getInstance();
 		public function TUIOLayer(_stage:Stage)
 		{
+			/*gray background*/
 			graphics.beginFill(0x000000,0.1);
-			graphics.drawRect(0,0,_stage.stageWidth,_stage.stageHeight);
+//			graphics.drawRect(0,0,_stage.stageWidth,_stage.stageHeight);
+			graphics.drawRect(0,0,1920,1080);
 			graphics.endFill();
 			
 //			this.addEventListener(MouseEvent.CLICK, onClick);
