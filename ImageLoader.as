@@ -31,47 +31,70 @@ package
 			/*resize the image*/
 			var portion:Number = loader.content.width/loader.content.height;
 			
-			imageHeight = Constants.bigImageHeight;
+			for(var i:int=0;i<Constants.totalRowsArray.length;i++){
+				imageHeight = Constants.imageHeightArray[i];
+				
+				/*---big image item area---*/
+				loader.content.height = imageHeight - 10;
+				loader.content.width = (imageHeight-10) * portion;
+				loader.x = 5;
+				loader.y = 5;
+				
+				/*add loader and draw black border*/
+				var sp:Sprite = new Sprite();
+				sp.graphics.beginFill(0x000000,1);
+				sp.graphics.drawRect(0,0,loader.content.width+10,imageHeight);
+				sp.graphics.endFill();
+				sp.addChild(loader);
+				
+				/*copy image data into bitmap array*/
+				var bmd:BitmapData = new BitmapData(sp.width,sp.height);
+				bmd.draw(sp);
+				Constants.memoryDataArray[currentIndex.toString()] = bmd;
+				/*---end---*/
+			}
 			
-			/*---big image item area---*/
-			loader.content.height = imageHeight - 10;
-			loader.content.width = (imageHeight-10) * portion;
-			loader.x = 5;
-			loader.y = 5;
-			
-			/*add loader and draw black border*/
-			var sp:Sprite = new Sprite();
-			sp.graphics.beginFill(0x000000,1);
-			sp.graphics.drawRect(0,0,loader.content.width+10,imageHeight);
-			sp.graphics.endFill();
-			sp.addChild(loader);
-			
-			/*copy image data into bitmap array*/
-			var bmd:BitmapData = new BitmapData(sp.width,sp.height);
-			bmd.draw(sp);
-			Constants.memoryBigData[currentIndex.toString()] = bmd;
-			/*---end---*/
-			
-			imageHeight = Constants.smallImageHeight;
-			
-			/*---small image item area---*/
-			loader.content.height = imageHeight - 10;
-			loader.content.width = (imageHeight-10) * portion;
-			loader.x = 5;
-			loader.y = 5;
-			
-			/*add loader and draw black border*/
-			sp = new Sprite();
-			sp.graphics.beginFill(0x000000,1);
-			sp.graphics.drawRect(0,0,loader.content.width+10,imageHeight);
-			sp.graphics.endFill();
-			sp.addChild(loader);
-			
-			/*copy image data into bitmap array*/
-			bmd = new BitmapData(sp.width,sp.height);
-			bmd.draw(sp);
-			Constants.memoryData[currentIndex.toString()] = bmd;
-			/*---end---*/
+//			imageHeight = Constants.bigImageHeight;
+//			
+//			/*---big image item area---*/
+//			loader.content.height = imageHeight - 10;
+//			loader.content.width = (imageHeight-10) * portion;
+//			loader.x = 5;
+//			loader.y = 5;
+//			
+//			/*add loader and draw black border*/
+//			var sp:Sprite = new Sprite();
+//			sp.graphics.beginFill(0x000000,1);
+//			sp.graphics.drawRect(0,0,loader.content.width+10,imageHeight);
+//			sp.graphics.endFill();
+//			sp.addChild(loader);
+//			
+//			/*copy image data into bitmap array*/
+//			var bmd:BitmapData = new BitmapData(sp.width,sp.height);
+//			bmd.draw(sp);
+//			Constants.memoryBigData[currentIndex.toString()] = bmd;
+//			/*---end---*/
+//			
+//			imageHeight = Constants.smallImageHeight;
+//			
+//			/*---small image item area---*/
+//			loader.content.height = imageHeight - 10;
+//			loader.content.width = (imageHeight-10) * portion;
+//			loader.x = 5;
+//			loader.y = 5;
+//			
+//			/*add loader and draw black border*/
+//			sp = new Sprite();
+//			sp.graphics.beginFill(0x000000,1);
+//			sp.graphics.drawRect(0,0,loader.content.width+10,imageHeight);
+//			sp.graphics.endFill();
+//			sp.addChild(loader);
+//			
+//			/*copy image data into bitmap array*/
+//			bmd = new BitmapData(sp.width,sp.height);
+//			bmd.draw(sp);
+//			Constants.memoryData[currentIndex.toString()] = bmd;
+//			/*---end---*/
 			
 			/*load next item*/
 			currentIndex++;

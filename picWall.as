@@ -58,6 +58,7 @@ package
 			}
 		}
 		private function initControl():void{
+			trace("a:"+Constants.imageLists.length+"D:"+Constants.imageLists.join("###"));
 //			for(var i:int=1;i<=Constants.imageLists.length;i++){
 //				imageList.push(i.toString());
 //			}
@@ -75,7 +76,8 @@ package
 			vc.addEventListener(TableViewEvent.ITEMWILLSHOW, onItemWillShow);
 			//			vc.rows = 6;
 			//			vc.cols = 10;
-			vc.rows = Constants.totalRowsForNormal;
+//			vc.rows = Constants.totalRowsForNormal;
+			vc.rows = Constants.totalRowsArray[0];
 			vc.cols = 15;
 			vc.stage = stage;
 			vc.lists = Constants.imageLists;
@@ -85,7 +87,7 @@ package
 			addChild(activelayer);
 			
 			/*switch vc model interval*/
-			flash.utils.setInterval(switchModeTrigger,30000);
+			flash.utils.setInterval(switchModeTrigger,3000);
 			
 			//			bigitemlayer = new Sprite();
 			//			addChild(bigitemlayer);
