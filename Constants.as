@@ -4,6 +4,10 @@ package
 
 	public class Constants
 	{
+		/*整个应用的宽度高度*/
+		public static const appWidth:int = 1920;
+		public static const appHeight:int = 1080;
+		
 		/*0:小图 1:中图 2:大图*/
 		public static var runMode:int = 0;
 		

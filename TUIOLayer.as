@@ -22,7 +22,7 @@ package
 			/*gray background*/
 			graphics.beginFill(0x000000,0.1);
 //			graphics.drawRect(0,0,_stage.stageWidth,_stage.stageHeight);
-			graphics.drawRect(0,0,1920,1080);
+			graphics.drawRect(0,0,Constants.appWidth, Constants.appHeight);
 			graphics.endFill();
 			
 //			this.addEventListener(MouseEvent.CLICK, onClick);
