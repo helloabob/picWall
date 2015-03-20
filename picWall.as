@@ -92,13 +92,14 @@ package
 			//			bigitemlayer = new Sprite();
 			//			addChild(bigitemlayer);
 			
-			var mask:TUIOLayer = new TUIOLayer(stage);
-			mask.addEventListener(TableViewEvent.MASKDIDTAPPED, onMaskTapped);
-			mask.addEventListener(TableViewEvent.MASKTOUCHDOWN, onMaskTouchDown);
-			mask.addEventListener(TableViewEvent.MASKTOUCHMOVE, onMaskTouchMove);
-			mask.addEventListener(TableViewEvent.MASKTOUCHUP, onMaskTouchUp);
-			mask.addEventListener(TableViewEvent.ITEMDIDZOOM, onMaskZoom);
-			addChild(mask);
+			/*移除mask图层*/
+//			var mask:TUIOLayer = new TUIOLayer(stage);
+//			mask.addEventListener(TableViewEvent.MASKDIDTAPPED, onMaskTapped);
+//			mask.addEventListener(TableViewEvent.MASKTOUCHDOWN, onMaskTouchDown);
+//			mask.addEventListener(TableViewEvent.MASKTOUCHMOVE, onMaskTouchMove);
+//			mask.addEventListener(TableViewEvent.MASKTOUCHUP, onMaskTouchUp);
+//			mask.addEventListener(TableViewEvent.ITEMDIDZOOM, onMaskZoom);
+//			addChild(mask);
 			
 			BigImageItem.instance.addEventListener(TableViewEvent.ITEMDIDSHOW, onItemDidShow);
 			BigImageItem.instance.addEventListener(TableViewEvent.ITEMDIDHIDE, onItemDidHide);
