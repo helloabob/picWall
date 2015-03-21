@@ -5,20 +5,22 @@ package
 	public class Constants
 	{
 		/*整个应用的宽度高度*/
-		public static const appWidth:int = 1920;
-		public static const appHeight:int = 1080;
+		public static const appWidth:int = 960;
+		public static const appHeight:int = 540;
 		
 		/*0:小图 1:中图 2:大图*/
 		public static var runMode:int = 0;
 		
 		/*大中小图对应-每屏放几行*/
-		public static var totalRowsArray:Array = [9,6,2];
+//		public static var totalRowsArray:Array = [9,6,2];
+		public static var totalRowsArray:Array = [6,3,2];
 		
 		/*store image data array*/
 		public static var memoryDataArray:Array = [{},{},{}];
 		
 		/*image height array*/
-		public static var imageHeightArray:Array = [120,180,540];
+//		public static var imageHeightArray:Array = [120,180,540];
+		public static var imageHeightArray:Array = [90,180,270];
 		
 //		public static var totalRowsForNormal:int = 9;
 //		public static var totalRowsForLarge:int = 2;
