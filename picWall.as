@@ -19,7 +19,7 @@ package
 	
 //	[SWF(width=1920,height=1080,backgroundColor=0xffffff,frameRate=20)]
 //	[SWF(width=1280,height=720,backgroundColor=0xffffff,frameRate=20)]
-	[SWF(width=960,height=540,backgroundColor=0xffffff)]
+	[SWF(width=960,height=540,backgroundColor=0xffffff,frameRate=20)]
 	public class picWall extends Sprite
 	{
 		private var imageList:Array = [];
@@ -88,7 +88,7 @@ package
 //			addChild(activelayer);
 			
 			/*switch vc model interval*/
-			flash.utils.setInterval(switchModeTrigger,30000);
+//			flash.utils.setInterval(switchModeTrigger,30000);
 			
 			//			bigitemlayer = new Sprite();
 			//			addChild(bigitemlayer);
