@@ -17,9 +17,9 @@ package
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 	
-	[SWF(width=1920,height=1080,backgroundColor=0xffffff,frameRate=20)]
+//	[SWF(width=1920,height=1080,backgroundColor=0xffffff,frameRate=20)]
 //	[SWF(width=1280,height=720,backgroundColor=0xffffff,frameRate=20)]
-//	[SWF(width=800,height=450,backgroundColor=0xffffff)]
+	[SWF(width=960,height=540,backgroundColor=0xffffff)]
 	public class picWall extends Sprite
 	{
 		private var imageList:Array = [];
@@ -43,7 +43,7 @@ package
 		}
 		public function picWall()
 		{
-			flash.system.fscommand("fullscreen","true");
+//			flash.system.fscommand("fullscreen","true");
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode=StageScaleMode.NO_SCALE;
 			
@@ -58,7 +58,6 @@ package
 			}
 		}
 		private function initControl():void{
-			trace("a:"+Constants.imageLists.length+"D:"+Constants.imageLists.join("###"));
 //			for(var i:int=1;i<=Constants.imageLists.length;i++){
 //				imageList.push(i.toString());
 //			}
@@ -87,7 +86,7 @@ package
 			addChild(activelayer);
 			
 			/*switch vc model interval*/
-			flash.utils.setInterval(switchModeTrigger,3000);
+			flash.utils.setInterval(switchModeTrigger,5000);
 			
 			//			bigitemlayer = new Sprite();
 			//			addChild(bigitemlayer);

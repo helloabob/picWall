@@ -50,7 +50,7 @@ package
 				/*copy image data into bitmap array*/
 				var bmd:BitmapData = new BitmapData(sp.width,sp.height);
 				bmd.draw(sp);
-				Constants.memoryDataArray[currentIndex.toString()] = bmd;
+				Constants.memoryDataArray[i][currentIndex.toString()] = bmd;
 				/*---end---*/
 			}
 			
