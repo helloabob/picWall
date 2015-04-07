@@ -23,8 +23,10 @@ package
 				photo_loader.content.height = photoHeight;
 			}
 			
-			/*添加关闭按钮事件*/
-			this.addEventListener(MouseEvent.CLICK, onClose);
+			/*初始化关闭按钮*/
+			clsBtn = new CloseBtn();
+			clsBtn.x = photoWidth-clsBtn.width;
+			clsBtn.addEventListener(MouseEvent.CLICK, onClose);
 		}
 		
 		/*关闭方法，当用户点击相框的关闭按钮触发*/
@@ -44,6 +46,9 @@ package
 		public function hide():void {
 			photo_loader.unloadAndStop();
 		}
+		
+		/*关闭按钮对象*/
+		private var clsBtn:CloseBtn;
 		
 		/*相框图加载器*/
 		private var photo_loader:Loader = null;
