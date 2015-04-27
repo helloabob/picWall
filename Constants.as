@@ -21,8 +21,8 @@ package
 		public static var memoryDataArray:Array = [{},{},{}];
 		
 		/*image height array*/
-//		public static var imageHeightArray:Array = [120,180,540];
-		public static var imageHeightArray:Array = [160,320,270];
+		public static var imageHeightArray:Array = [120,180,540];
+//		public static var imageHeightArray:Array = [160,320,270];
 		
 //		public static var totalRowsForNormal:int = 9;
 //		public static var totalRowsForLarge:int = 2;

@@ -20,7 +20,7 @@ package
 			/*初始化8个相框元素*/
 			for(var i:int = 0;i<8;i++){
 				var photo:PhotoFrameView = new PhotoFrameView();
-				photo.graphics.beginFill(0xff00ff,1);
+				photo.graphics.beginFill(0x000000,1);
 				photo.graphics.drawRect(0,0,200,200);
 				photo.graphics.endFill();
 				photoFramesStack.push(photo);
@@ -38,12 +38,31 @@ package
 			photo.y = Constants.appHeight/2 - photo.photoHeight/2;
 			/*准备显示*/
 			photo.show(imageId);
+			tidyUp();
 			
-			var targetX:int = 100;
-			var targetY:int = 200;
-			
-			/*相框显示动画*/
-			TweenLite.to(photo,Constants.photoAnimationDuration,{x:targetX,y:targetY});
+//			var targetX:int = 100;
+//			var targetY:int = 200;
+//			
+		}
+		
+		private function tidyUp():void{
+			var len:int = canvas.numChildren;
+			trace(len);
+			var offset_x;
+			var offset_y;
+			for(var i=1;i<len;i++){
+				var tmp:* = canvas.getChildAt(i);
+				if(i<5){
+					offset_x=50+(i-1)*(tmp.photoWidth+10);
+					offset_y=150;
+					TweenLite.to(tmp,Constants.photoAnimationDuration,{x:offset_x,y:offset_y});
+				}else{
+					var y=i-4;
+					offset_x=50+(y-1)*(tmp.photoWidth+10);
+					offset_y=150+tmp.photoHeight+50;
+					TweenLite.to(tmp,Constants.photoAnimationDuration,{x:offset_x,y:offset_y});
+				}
+			}
 		}
 		
 		/*隐藏某个相框方法*/
@@ -56,6 +75,7 @@ package
 					photoFramesStack.push(photo);
 					/*准备隐藏*/
 					photo.hide();
+					tidyUp();
 				}
 			}
 		}

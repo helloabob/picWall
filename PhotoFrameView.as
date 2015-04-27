@@ -27,6 +27,7 @@ package
 			clsBtn = new CloseBtn();
 			clsBtn.x = photoWidth-clsBtn.width;
 			clsBtn.addEventListener(MouseEvent.CLICK, onClose);
+			this.addChild(clsBtn);
 		}
 		
 		/*关闭方法，当用户点击相框的关闭按钮触发*/
