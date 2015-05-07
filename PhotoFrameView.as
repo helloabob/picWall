@@ -52,13 +52,29 @@ package
 		private var clsBtn:CloseBtn;
 		
 		/*相框图加载器*/
+		/**
+		 * 4-----5
+		 *  2---3
+		 *    1
+		 */
 		private var photo_loader:Loader = null;
+		private var photo_loader2:Loader = null;
+		private var photo_loader3:Loader = null;
+		private var photo_loader4:Loader = null;
+		private var photo_loader5:Loader = null;
 		
 		/*相框定宽*/
 		public const photoWidth:int = 300;
 		
 		/*相框定高*/
 		public const photoHeight:int = 200;
+		
+		private const pic1Width:int = 200;
+		private const pic2Width:int = 150;
+		private const pic3Width:int = 100;
+		private const pic1Height:int = 150;
+		private const pic2Height:int = 100;
+		private const pic3Height:int = 70;
 		
 		/**
 		 * 关闭相框代理，回调时需传this对象*/
