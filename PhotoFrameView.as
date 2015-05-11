@@ -29,12 +29,12 @@ package
 		/**
 		 * 宽度数组
 		 */
-		private var imageWidthArray:Array = [200, 150, 100, 150, 200];
+		private var imageWidthArray:Array = [100, 150, 200, 150, 100];
 		
 		/**
 		 * 高度数组
 		 */
-		private var imageHeightArray:Array = [150, 100, 70, 100, 150];
+		private var imageHeightArray:Array = [70, 100, 150, 100, 50];
 		
 		/**
 		 * 偏移量数组
@@ -67,6 +67,10 @@ package
 //				photo_loader.content.width = photoWidth;
 //				photo_loader.content.height = photoHeight;
 				var ld:PhotoLoader = evt.target as PhotoLoader;
+				if(ld==null){
+					trace("null pointer");
+					return;
+				}
 				ld.unloadAndStop();
 				ld.removeChildren();
 				var aa:TextField = new TextField();
@@ -79,6 +83,7 @@ package
 				var con:* = ld.content;
 				con.width = imageWidthArray[tmp];
 				con.height = imageHeightArray[tmp];
+				this.tidyup();
 //				TweenLite.to(this,Constants.photoAnimationDuration,{width:photoWidth+50,height:photoHeight+50});
 			}
 			
@@ -87,6 +92,42 @@ package
 			clsBtn.x = photoWidth-clsBtn.width;
 			clsBtn.addEventListener(MouseEvent.CLICK, onClose);
 			this.addChild(clsBtn);
+		}
+		
+		private function tidyup():void{
+			if(currentIndex==0){
+				this.addChild(photoArray[3]);
+				this.addChild(photoArray[2]);
+				this.addChild(photoArray[4]);
+				this.addChild(photoArray[1]);
+				this.addChild(photoArray[0]);
+			}else if(currentIndex==1){
+				this.addChild(photoArray[3]);
+				this.addChild(photoArray[4]);
+				this.addChild(photoArray[2]);
+				this.addChild(photoArray[0]);
+				this.addChild(photoArray[1]);
+			}else if(currentIndex==2){
+				trace("c=2");
+				this.addChild(photoArray[4]);
+				this.addChild(photoArray[0]);
+				this.addChild(photoArray[1]);
+				this.addChild(photoArray[3]);
+				this.addChild(photoArray[2]);
+			}else if(currentIndex==3){
+				this.addChild(photoArray[1]);
+				this.addChild(photoArray[0]);
+				this.addChild(photoArray[2]);
+				this.addChild(photoArray[4]);
+				this.addChild(photoArray[3]);
+			}else if(currentIndex==4){
+				this.addChild(photoArray[2]);
+				this.addChild(photoArray[1]);
+				this.addChild(photoArray[3]);
+				this.addChild(photoArray[0]);
+				this.addChild(photoArray[4]);
+			}
+			
 		}
 		
 		/*关闭方法，当用户点击相框的关闭按钮触发*/

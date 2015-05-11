@@ -88,7 +88,7 @@ package
 //			addChild(activelayer);
 			
 			/*switch vc model interval*/
-			flash.utils.setInterval(switchModeTrigger,3000);
+//			flash.utils.setInterval(switchModeTrigger,3000);
 			
 			//			bigitemlayer = new Sprite();
 			//			addChild(bigitemlayer);
