@@ -20,9 +20,9 @@ package
 			/*初始化8个相框元素*/
 			for(var i:int = 0;i<8;i++){
 				var photo:PhotoFrameView = new PhotoFrameView();
-				photo.graphics.beginFill(0x000000,1);
-				photo.graphics.drawRect(0,0,200,200);
-				photo.graphics.endFill();
+//				photo.graphics.beginFill(0x000000,1);
+//				photo.graphics.drawRect(0,0,200,200);
+//				photo.graphics.endFill();
 				photoFramesStack.push(photo);
 				photo.closeHandler = hidePhotoFrame;
 			}

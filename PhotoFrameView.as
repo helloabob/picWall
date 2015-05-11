@@ -1,26 +1,85 @@
 package
 {
+	import com.greensock.TweenLite;
+	
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
+	import flash.text.TextField;
 	
 	public class PhotoFrameView extends BaseSprite
 	{
+		
+		/**
+		 * 默认数组索引
+		 */
+		private const defaultIndex:int = 2;
+		
+		/**
+		 * 当前大图所在数组索引
+		 */
+		private var currentIndex:int = 2;
+		
+		/**
+		 * 5个图片数组
+		 */
+		private var photoArray:Array = [];
+		
+		/**
+		 * 宽度数组
+		 */
+		private var imageWidthArray:Array = [200, 150, 100, 150, 200];
+		
+		/**
+		 * 高度数组
+		 */
+		private var imageHeightArray:Array = [150, 100, 70, 100, 150];
+		
+		/**
+		 * 偏移量数组
+		 */
+		private var imageOffsetArray:Array = [{x:10,y:0}, {x:20,y:10}, {x:30,y:20}, {x:40,y:10}, {x:50,y:0}];
+		
+		
 		
 		public function PhotoFrameView()
 		{
 			super();
 			
 			/*初始化相框加载器*/
-			photo_loader = new Loader();
-			photo_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onPhotoComplete);
-			this.addChild(photo_loader);
+//			photo_loader = new Loader();
+//			photo_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onPhotoComplete);
+			
+//			this.addChild(photo_loader);
+			for(var i:int=0;i<5;i++){
+				var ld:PhotoLoader = new PhotoLoader();
+				ld.index = i;
+				ld.contentLoaderInfo.addEventListener(Event.COMPLETE, onPhotoComplete);
+				ld.x = imageOffsetArray[i].x;
+				ld.y = imageOffsetArray[i].y;
+				this.addChild(ld);
+				photoArray.push(ld);
+			}
 			
 			/*相框图加载完成后回调方法*/
 			function onPhotoComplete(evt:Event):void{
-				photo_loader.content.width = photoWidth;
-				photo_loader.content.height = photoHeight;
+//				photo_loader.content.width = photoWidth;
+//				photo_loader.content.height = photoHeight;
+				var ld:PhotoLoader = evt.target as PhotoLoader;
+				ld.unloadAndStop();
+				ld.removeChildren();
+				var aa:TextField = new TextField();
+				aa.text = ld.imageIndex.toString();
+				ld.addChild(aa);
+				var delta:int = currentIndex - defaultIndex;
+				var tmp:int = ld.index - delta;
+				if(tmp<0)tmp+=5;
+				else if(tmp>4)tmp-=5;
+				var con:* = ld.content;
+				con.width = imageWidthArray[tmp];
+				con.height = imageHeightArray[tmp];
+//				TweenLite.to(this,Constants.photoAnimationDuration,{width:photoWidth+50,height:photoHeight+50});
 			}
 			
 			/*初始化关闭按钮*/
@@ -38,14 +97,21 @@ package
 		/**
 		 * 加载并显示相框图*/
 		public function show(imageId:String):void {
-			var url:String = Constants.getBigImageName(imageId);
-			photo_loader.load(new URLRequest(url));
+			/*加载图片1*/
+			var index:int = int(imageId) - 1;
+			index = Constants.getPrevImageIndex(index);
+			index = Constants.getPrevImageIndex(index);
+			for(var i:int=0;i<photoArray.length;i++){
+				var ld:PhotoLoader = photoArray[i] as PhotoLoader;
+				ld.imageIndex = index;
+				index = Constants.getNextImageIndex(index);
+			}
 		}
 		
 		/**
 		 * 退出并隐藏相框*/
 		public function hide():void {
-			photo_loader.unloadAndStop();
+//			photo_loader.unloadAndStop();
 		}
 		
 		/*关闭按钮对象*/
@@ -57,24 +123,17 @@ package
 		 *  2---3
 		 *    1
 		 */
-		private var photo_loader:Loader = null;
-		private var photo_loader2:Loader = null;
-		private var photo_loader3:Loader = null;
-		private var photo_loader4:Loader = null;
-		private var photo_loader5:Loader = null;
+//		private var photo_loader:Loader = null;
+//		private var photo_loader2:Loader = null;
+//		private var photo_loader3:Loader = null;
+//		private var photo_loader4:Loader = null;
+//		private var photo_loader5:Loader = null;
 		
 		/*相框定宽*/
 		public const photoWidth:int = 300;
 		
 		/*相框定高*/
 		public const photoHeight:int = 200;
-		
-		private const pic1Width:int = 200;
-		private const pic2Width:int = 150;
-		private const pic3Width:int = 100;
-		private const pic1Height:int = 150;
-		private const pic2Height:int = 100;
-		private const pic3Height:int = 70;
 		
 		/**
 		 * 关闭相框代理，回调时需传this对象*/

@@ -58,14 +58,42 @@ package
 		{
 		}
 		
+		/**
+		 * 根据图片索引返回下一个图片索引
+		 * @param 当前图片索引
+		 * @return 图片索引
+		 */
+		public static function getNextImageIndex(index:int):int {
+			if(index<0)index = imageLists.length + index;
+			else if (index>imageLists.length-1)index = index - imageLists.length;
+			if(index<imageLists.length-1)return index+1;
+			else return 0;
+		}
+		
+		/**
+		 * 根据图片索引返回上一个图片索引
+		 * @param 当前图片索引
+		 * @return 图片索引
+		 */
+		public static function getPrevImageIndex(index:int):int {
+			if(index<0)index = imageLists.length + index;
+			else if (index>imageLists.length-1)index = index - imageLists.length;
+			if(index==0)return imageLists.length-1;
+			else return index-1;
+		}
+		
 		public static function getSmallImageName(imageId:String):String{
 			var imgName:String = imageLists[int(imageId)-1];
 			return smallImageUrl.replace("{0}",imgName);
 		}
 		
-		public static function getBigImageName(imageId:String):String{
-			var imgName:String = imageLists[int(imageId)-1];
-			return bigImageUrl.replace("{0}",imgName);
+		/**
+		 * 返回大图对应路径
+		 * @param imageId 图片索引，从0开始
+		 */
+		public static function getBigImagePathWithIndex(imageId:int):String{
+			var imgPath:String = imageLists[imageId];
+			return bigImageUrl.replace("{0}",imgPath);
 		}
 		
 		public static function getBarcodeImageName(imageId:String):String{
