@@ -8,16 +8,29 @@ package
 		
 		private var _imageIndex:int = -1;
 		
-		/**
-		 * 数组索引
-		 */
-		public var index:int = -1;
+		private var _index:int = -1;
 		
 		public function PhotoLoader()
 		{
 			super();
 		}
 		
+		/**
+		 * 数组索引
+		 */
+		public function get index():int
+		{
+			return _index;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set index(value:int):void
+		{
+			_index = value;
+		}
+
 		/**
 		 * 图片索引
 		 */

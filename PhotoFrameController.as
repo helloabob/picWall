@@ -55,13 +55,15 @@ package
 				if(i<5){
 					offset_x=50+(i-1)*(tmp.photoWidth+10);
 					offset_y=150;
-					TweenLite.to(tmp,Constants.photoAnimationDuration,{x:offset_x,y:offset_y});
+//					TweenLite.to(tmp,Constants.photoAnimationDuration,{x:offset_x,y:offset_y});
 				}else{
 					var y=i-4;
 					offset_x=50+(y-1)*(tmp.photoWidth+10);
 					offset_y=150+tmp.photoHeight+50;
-					TweenLite.to(tmp,Constants.photoAnimationDuration,{x:offset_x,y:offset_y});
+//					TweenLite.to(tmp,Constants.photoAnimationDuration,{x:offset_x,y:offset_y});
 				}
+				tmp.x = offset_x;
+				tmp.y = offset_y;
 			}
 		}
 		
