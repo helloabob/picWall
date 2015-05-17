@@ -54,6 +54,11 @@ package
 		 * 相框展示动画时长*/
 		public static const photoAnimationDuration:Number = 0.5;
 		
+		/**
+		 * 喜欢统计次数
+		 */
+		public static var favCountArray:Array = [];
+		
 		public function Constants()
 		{
 		}

@@ -30,6 +30,7 @@ package
 		
 		/*展示8个相框通用方法*/
 		public function showPhotoFrame(imageId:String):void {
+			trace("showPhoto_"+imageId);
 			if(photoFramesStack.length<=0)return;
 			var photo:PhotoFrameView = photoFramesStack.pop();
 			photoFramesShown.push(photo);

@@ -3,16 +3,19 @@ package
 	import com.greensock.TweenLite;
 	
 	import flash.display.Loader;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	
 	public class PhotoFrameView extends BaseSprite
 	{
 		
 		/*关闭按钮对象*/
-		private var clsBtn:CloseBtn;
+//		private var clsBtn:CloseBtn;
 		
 		
 		/*相框定宽*/
@@ -60,6 +63,11 @@ package
 		private var btnRight:ButtonRight = new ButtonRight();
 		private var btnFavor:ButtonFavor = new ButtonFavor();
 		private var btnBarcode:ButtonBarcode = new ButtonBarcode();
+		private var btnClose:ButtonClose = new ButtonClose();
+		private var sprFav:SpriteFav = new SpriteFav();
+		private var txtFav:TextField = new TextField();
+		
+		private var scrollView:Sprite = new Sprite();
 		
 		/*是否动画*/
 		private var isAnimation:Boolean = false;
@@ -73,13 +81,14 @@ package
 //			photo_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onPhotoComplete);
 			
 //			this.addChild(photo_loader);
+			this.addChild(scrollView);
 			for(var i:int=0;i<5;i++){
 				var ld:PhotoLoader = new PhotoLoader();
 				ld.index = i;
 				ld.contentLoaderInfo.addEventListener(Event.COMPLETE, onPhotoComplete);
 				ld.x = imageOffsetArray[i].x;
 				ld.y = imageOffsetArray[i].y;
-				this.addChild(ld);
+				scrollView.addChild(ld);
 				photoArray.push(ld);
 			}
 			
@@ -98,30 +107,65 @@ package
 			btnRight.addEventListener(MouseEvent.CLICK, onRight);
 			this.addChild(btnRight);
 			
-			btnFavor.x = photoWidth/2 - arrowSize - 10;
-			btnFavor.y = photoHeight - arrowSize;
-			btnFavor.width = arrowSize;
-			btnFavor.height = arrowSize;
-			btnFavor.addEventListener(MouseEvent.CLICK, onFavor);
-			this.addChild(btnFavor);
-			
-			btnBarcode.x = photoWidth/2 + 10;
+			btnBarcode.x = photoWidth/2 - arrowSize/2;
 			btnBarcode.y = photoHeight - arrowSize;
 			btnBarcode.width = arrowSize;
 			btnBarcode.height = arrowSize;
 			btnBarcode.addEventListener(MouseEvent.CLICK, onBarcode);
 			this.addChild(btnBarcode);
 			
+			btnFavor.x = photoWidth/2 - arrowSize*3/2 - 20;
+			btnFavor.y = photoHeight - arrowSize;
+			btnFavor.width = arrowSize;
+			btnFavor.height = arrowSize;
+			btnFavor.addEventListener(MouseEvent.CLICK, onFavor);
+			this.addChild(btnFavor);
+			
+			btnClose.x = photoWidth/2 + arrowSize/2 + 20;
+			btnClose.y = photoHeight - arrowSize;
+			btnClose.width = arrowSize;
+			btnClose.height = arrowSize;
+			btnClose.addEventListener(MouseEvent.CLICK, onClose);
+			this.addChild(btnClose);
+			
+			sprFav.x = imageOffsetArray[2].x + 20;
+			sprFav.y = imageOffsetArray[2].y + 20;
+			sprFav.width = 20;
+			sprFav.height = 20;
+			this.addChild(sprFav);
+			
+			var tf:TextFormat = new TextFormat();
+			tf.size = 20;
+			tf.font = "Georgia";
+			tf.align = TextFormatAlign.LEFT;
+			txtFav.x = sprFav.x + 30;
+			txtFav.y = sprFav.y - 5;
+			txtFav.textColor = 0xe43322;
+			txtFav.selectable = false;
+			txtFav.defaultTextFormat = tf;
+			txtFav.setTextFormat(tf);
+			txtFav.text = "0";
+			this.addChild(txtFav);
 			
 			/*初始化关闭按钮*/
-			clsBtn = new CloseBtn();
-			clsBtn.x = photoWidth-clsBtn.width;
-			clsBtn.addEventListener(MouseEvent.CLICK, onClose);
-			this.addChild(clsBtn);
+//			clsBtn = new CloseBtn();
+//			clsBtn.x = photoWidth-clsBtn.width;
+//			clsBtn.addEventListener(MouseEvent.CLICK, onClose);
+//			this.addChild(clsBtn);
 		}
 		
 		private function onFavor(evt:MouseEvent):void{
+			var count:int = 0;
+			var imageIndex:int = photoArray[currentIndex].imageIndex;
+			if(Constants.favCountArray[imageIndex]==null){
+				count = 1;
+			} else {
+				count = Constants.favCountArray[imageIndex];
+				count ++;
+			}
+			Constants.favCountArray[imageIndex] = count;
 			
+			txtFav.text = count.toString();
 		}
 		
 		private function onBarcode(evt:MouseEvent):void{
@@ -169,41 +213,44 @@ package
 		private function tidyup():void{
 			var sort:Array = [];
 			if(currentIndex==0){
-				this.addChild(photoArray[3]);
-				this.addChild(photoArray[2]);
-				this.addChild(photoArray[4]);
-				this.addChild(photoArray[1]);
-				this.addChild(photoArray[0]);
+				scrollView.addChild(photoArray[3]);
+				scrollView.addChild(photoArray[2]);
+				scrollView.addChild(photoArray[4]);
+				scrollView.addChild(photoArray[1]);
+				scrollView.addChild(photoArray[0]);
 				sort = [3,4,0,1,2];
 			}else if(currentIndex==1){
-				this.addChild(photoArray[3]);
-				this.addChild(photoArray[4]);
-				this.addChild(photoArray[2]);
-				this.addChild(photoArray[0]);
-				this.addChild(photoArray[1]);
+				scrollView.addChild(photoArray[3]);
+				scrollView.addChild(photoArray[4]);
+				scrollView.addChild(photoArray[2]);
+				scrollView.addChild(photoArray[0]);
+				scrollView.addChild(photoArray[1]);
 				sort = [4,0,1,2,3];
 			}else if(currentIndex==2){
-				this.addChild(photoArray[4]);
-				this.addChild(photoArray[0]);
-				this.addChild(photoArray[1]);
-				this.addChild(photoArray[3]);
-				this.addChild(photoArray[2]);
+				scrollView.addChild(photoArray[4]);
+				scrollView.addChild(photoArray[0]);
+				scrollView.addChild(photoArray[1]);
+				scrollView.addChild(photoArray[3]);
+				scrollView.addChild(photoArray[2]);
 				sort = [0,1,2,3,4];
 			}else if(currentIndex==3){
-				this.addChild(photoArray[1]);
-				this.addChild(photoArray[0]);
-				this.addChild(photoArray[2]);
-				this.addChild(photoArray[4]);
-				this.addChild(photoArray[3]);
+				scrollView.addChild(photoArray[1]);
+				scrollView.addChild(photoArray[0]);
+				scrollView.addChild(photoArray[2]);
+				scrollView.addChild(photoArray[4]);
+				scrollView.addChild(photoArray[3]);
 				sort = [1,2,3,4,0];
 			}else if(currentIndex==4){
-				this.addChild(photoArray[2]);
-				this.addChild(photoArray[1]);
-				this.addChild(photoArray[3]);
-				this.addChild(photoArray[0]);
-				this.addChild(photoArray[4]);
+				scrollView.addChild(photoArray[2]);
+				scrollView.addChild(photoArray[1]);
+				scrollView.addChild(photoArray[3]);
+				scrollView.addChild(photoArray[0]);
+				scrollView.addChild(photoArray[4]);
 				sort = [2,3,4,0,1];
 			}
+			var imageIndex:int = photoArray[currentIndex].imageIndex;
+			var count:int = Constants.favCountArray[imageIndex]==null?0:Constants.favCountArray[imageIndex];
+			txtFav.text = count.toString();
 			if(isAnimation){
 				for(var i:int=0;i<sort.length;i++){
 //					TweenLite.to(tmp,Constants.photoAnimationDuration,{x:offset_x,y:offset_y});
@@ -227,14 +274,15 @@ package
 		 * 加载并显示相框图*/
 		public function show(imageId:String):void {
 			/*加载图片1*/
+			currentIndex = 2;
 			var index:int = int(imageId) - 1;
-			trace("ind:"+index.toString());
 			index = Constants.getPrevImageIndex(index);
 			index = Constants.getPrevImageIndex(index);
-			trace("ind2:"+index.toString());
 			for(var i:int=0;i<photoArray.length;i++){
 				var ld:PhotoLoader = photoArray[i] as PhotoLoader;
 				ld.imageIndex = index;
+				ld.x = imageOffsetArray[i].x;
+				ld.y = imageOffsetArray[i].y;
 				trace("load:"+index.toString());
 				index = Constants.getNextImageIndex(index);
 			}
