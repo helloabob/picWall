@@ -66,6 +66,7 @@ package
 		private var btnClose:ButtonClose = new ButtonClose();
 		private var sprFav:SpriteFav = new SpriteFav();
 		private var txtFav:TextField = new TextField();
+		private var _viewBarcode:BarcodeView = new BarcodeView();
 		
 		private var scrollView:Sprite = new Sprite();
 		
@@ -114,6 +115,10 @@ package
 			btnBarcode.addEventListener(MouseEvent.CLICK, onBarcode);
 			this.addChild(btnBarcode);
 			
+			_viewBarcode.x = photoWidth/2 - _viewBarcode.width/2;
+			_viewBarcode.y = btnBarcode.y - _viewBarcode.height - 20;
+			this.addChild(_viewBarcode);
+			
 			btnFavor.x = photoWidth/2 - arrowSize*3/2 - 20;
 			btnFavor.y = photoHeight - arrowSize;
 			btnFavor.width = arrowSize;
@@ -154,6 +159,12 @@ package
 //			this.addChild(clsBtn);
 		}
 		
+		private function showBarcode():void{
+			if(_viewBarcode.alpha==0)_viewBarcode.alpha = 1;
+			else _viewBarcode.alpha = 0;
+			
+		}
+		
 		private function onFavor(evt:MouseEvent):void{
 			var count:int = 0;
 			var imageIndex:int = photoArray[currentIndex].imageIndex;
@@ -169,7 +180,7 @@ package
 		}
 		
 		private function onBarcode(evt:MouseEvent):void{
-			
+			this.showBarcode();
 		}
 		
 		private function onLeft(evt:MouseEvent):void{
@@ -286,6 +297,22 @@ package
 				trace("load:"+index.toString());
 				index = Constants.getNextImageIndex(index);
 			}
+			/*clear children at viewBarcode*/
+			if(_viewBarcode.numChildren>0)_viewBarcode.removeChildAt(0);
+			
+			/*load barcode image*/
+			var bar:Loader = new Loader();
+			bar.contentLoaderInfo.addEventListener(Event.COMPLETE,onBarcodeComplete);
+			bar.load(new URLRequest(Constants.getBarcodeImageName(imageId)));
+			trace(Constants.getBarcodeImageName(imageId));
+			_viewBarcode.addChild(bar);
+			_viewBarcode.alpha = 0;
+		}
+		private function onBarcodeComplete(evt:Event):void{
+			var ld:Loader = evt.target.loader;
+			ld.content.width = 137;
+			ld.content.height = 137;
+			ld.contentLoaderInfo.removeEventListener(Event.COMPLETE, onBarcodeComplete);
 		}
 		
 		/**
