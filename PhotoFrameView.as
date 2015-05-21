@@ -6,6 +6,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.TransformGestureEvent;
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -17,12 +18,16 @@ package
 		/*关闭按钮对象*/
 //		private var clsBtn:CloseBtn;
 		
+		/**
+		 * 相框索引
+		 */
+		public var photoIndex:int = -1;
 		
 		/*相框定宽*/
 		public const photoWidth:int = 904;
 		
 		/*相框定高*/
-		public const photoHeight:int = 567;
+		public const photoHeight:int = 504;
 		
 		/*箭头尺寸*/
 		private const arrowSize:int = 63;
@@ -57,7 +62,12 @@ package
 		/**
 		 * 偏移量数组
 		 */
-		private var imageOffsetArray:Array = [{x:arrowSize+padding,y:177}, {x:133,y:124}, {x:166,y:71}, {x:346,y:124}, {x:522,y:177}];
+		private var imageOffsetArray:Array = [{x:arrowSize+padding,y:114}, {x:133,y:61}, {x:166,y:8}, {x:346,y:61}, {x:522,y:114}];
+		
+		/**
+		 * 是否可互动
+		 */
+		private var canInteractive:Boolean = false;
 		
 		private var btnLeft:ButtonLeft = new ButtonLeft();
 		private var btnRight:ButtonRight = new ButtonRight();
@@ -73,9 +83,23 @@ package
 		/*是否动画*/
 		private var isAnimation:Boolean = false;
 		
+		private function onSwipe(evt:TransformGestureEvent):void{
+			if(evt.offsetX == 1){
+				this.onLeft(null);
+			}else if(evt.offsetX == -1){
+				this.onRight(null);
+			}
+		}
+		
 		public function PhotoFrameView()
 		{
 			super();
+			
+			this.graphics.beginFill(0x000000,0);
+			this.graphics.drawRect(0,0,photoWidth,photoHeight);
+			this.graphics.endFill();
+			
+			this.addEventListener(TransformGestureEvent.GESTURE_SWIPE, onSwipe);
 			
 			/*初始化相框加载器*/
 //			photo_loader = new Loader();
@@ -185,6 +209,8 @@ package
 		
 		private function onLeft(evt:MouseEvent):void{
 			trace("left");
+			if(canInteractive==false)return;
+			canInteractive = false;
 			currentIndex = fixOutOfRange(currentIndex-1);
 			var ld:PhotoLoader = photoArray[fixOutOfRange(currentIndex-2)];
 			ld.imageIndex = Constants.getPrevImageIndex(photoArray[fixOutOfRange(currentIndex-1)].imageIndex);
@@ -193,6 +219,8 @@ package
 		
 		private function onRight(evt:MouseEvent):void{
 			trace("right");
+			if(canInteractive==false)return;
+			canInteractive = false;
 			currentIndex = fixOutOfRange(currentIndex+1);
 			var ld:PhotoLoader = photoArray[fixOutOfRange(currentIndex+2)];
 			ld.imageIndex = Constants.getNextImageIndex(photoArray[fixOutOfRange(currentIndex+1)].imageIndex);
@@ -219,6 +247,7 @@ package
 			con.width = imageWidthArray[tmp];
 			con.height = imageHeightArray[tmp];
 			this.tidyup();
+			canInteractive = true;
 		}
 		
 		private function tidyup():void{
@@ -285,6 +314,7 @@ package
 		 * 加载并显示相框图*/
 		public function show(imageId:String):void {
 			/*加载图片1*/
+			canInteractive = false;
 			currentIndex = 2;
 			var index:int = int(imageId) - 1;
 			index = Constants.getPrevImageIndex(index);
@@ -304,7 +334,6 @@ package
 			var bar:Loader = new Loader();
 			bar.contentLoaderInfo.addEventListener(Event.COMPLETE,onBarcodeComplete);
 			bar.load(new URLRequest(Constants.getBarcodeImageName(imageId)));
-			trace(Constants.getBarcodeImageName(imageId));
 			_viewBarcode.addChild(bar);
 			_viewBarcode.alpha = 0;
 		}
@@ -319,6 +348,10 @@ package
 		 * 退出并隐藏相框*/
 		public function hide():void {
 //			photo_loader.unloadAndStop();
+			for(var i:int=0;i<photoArray.length;i++){
+				var ld:PhotoLoader = photoArray[i] as PhotoLoader;
+				ld.unloadAndStop();
+			}
 		}
 		
 		/**

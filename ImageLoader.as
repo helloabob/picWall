@@ -53,6 +53,7 @@ package
 				Constants.memoryDataArray[i][currentIndex.toString()] = bmd;
 				/*---end---*/
 			}
+			loader.unloadAndStop();
 			
 //			imageHeight = Constants.bigImageHeight;
 //			

@@ -16,8 +16,10 @@ package
 	import flash.system.fscommand;
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
+	import flash.ui.Multitouch;
+	import flash.ui.MultitouchInputMode;
 	
-	[SWF(width=1920,height=1080,backgroundColor=0xffffff,frameRate=20)]
+	[SWF(width=7680,height=1080,backgroundColor=0xffffff,frameRate=20)]
 //	[SWF(width=1280,height=720,backgroundColor=0xffffff,frameRate=20)]
 //	[SWF(width=960,height=540,backgroundColor=0xffffff,frameRate=20)]
 	public class picWall extends Sprite
@@ -46,6 +48,8 @@ package
 //			flash.system.fscommand("fullscreen","true");
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode=StageScaleMode.NO_SCALE;
+			
+			Multitouch.inputMode = MultitouchInputMode.GESTURE;
 			
 			/*load image list txt module*/
 			var txt_loader:URLLoader = new URLLoader(new URLRequest("imageList.txt"));
@@ -88,7 +92,7 @@ package
 //			addChild(activelayer);
 			
 			/*switch vc model interval*/
-//			flash.utils.setInterval(switchModeTrigger,3000);
+			flash.utils.setInterval(switchModeTrigger,30000);
 			
 			//			bigitemlayer = new Sprite();
 			//			addChild(bigitemlayer);
@@ -102,8 +106,8 @@ package
 //			mask.addEventListener(TableViewEvent.ITEMDIDZOOM, onMaskZoom);
 //			addChild(mask);
 			
-			BigImageItem.instance.addEventListener(TableViewEvent.ITEMDIDSHOW, onItemDidShow);
-			BigImageItem.instance.addEventListener(TableViewEvent.ITEMDIDHIDE, onItemDidHide);
+//			BigImageItem.instance.addEventListener(TableViewEvent.ITEMDIDSHOW, onItemDidShow);
+//			BigImageItem.instance.addEventListener(TableViewEvent.ITEMDIDHIDE, onItemDidHide);
 			
 			vc.start();
 			
@@ -111,6 +115,21 @@ package
 			
 			btnLeftArrow = new BtnLeft();
 			btnRightArrow = new BtnRight();
+			
+			
+//			var line:Sprite = new Sprite();
+//			line.graphics.beginFill(0xff0000,1);
+//			line.graphics.drawRect(0,539,Constants.appWidth,3);
+//			line.graphics.endFill();
+//			this.addChild(line);
+//			
+//			for(var i:int=1;i<8;i++){
+//				line = new Sprite();
+//				line.graphics.beginFill(0xff0000,1);
+//				line.graphics.drawRect(i*960-1,0,3,Constants.appHeight);
+//				line.graphics.endFill();
+//				this.addChild(line);
+//			}
 			
 			/*test zoom function*/
 			//			var sp:Sprite = new Sprite();

@@ -5,7 +5,7 @@ package
 	public class Constants
 	{
 		/*整个应用的宽度高度*/
-		public static const appWidth:int = 1920;
+		public static const appWidth:int = 7680;
 		public static const appHeight:int = 1080;
 //		public static const appWidth:int = 960;
 //		public static const appHeight:int = 540;
