@@ -10,26 +10,37 @@ package
 //		public static const appWidth:int = 960;
 //		public static const appHeight:int = 540;
 		
+		/**
+		 * 大小图切换持续时间
+		 */
+		public static const durationForSwitchArray:Array = [14000,22000];
+		
 		/*0:小图 1:中图 2:大图*/
 		public static var runMode:int = 0;
 		
 		/*大中小图对应-每屏放几行*/
-		public static var totalRowsArray:Array = [9,6,2];
+		public static var totalRowsArray:Array = [6,2]
+//		public static var totalRowsArray:Array = [9,6,2];
 //		public static var totalRowsArray:Array = [6,3,2];
 		
 		/*store image data array*/
-		public static var memoryDataArray:Array = [{},{},{}];
+//		public static var memoryDataArray:Array = [{},{},{}];
+		public static var memoryDataArray:Array = [{},{}];
 		
 		/*image height array*/
-		public static var imageHeightArray:Array = [120,180,540];
+//		public static var imageHeightArray:Array = [120,180,540];
 //		public static var imageHeightArray:Array = [160,320,270];
+		public static var imageHeightArray:Array = [180,540];
 		
 //		public static var totalRowsForNormal:int = 9;
 //		public static var totalRowsForLarge:int = 2;
 		
+		public static const switchAnimationDuration:int = 3;
+		public static const itemMoveAnimationDuration:Number = 1.5;
+		
 		public static const horizontalPadding:int = 5;
 		public static const verticalPadding:int = 5;
-		public static const pixelPerTime:int = 1;
+		public static const pixelPerTime:int = 2;
 		public static const imageDescription:String = "苏州市公共文化中心是我市重点建设的重大公共文化设施项目和重要的文化标志性工程，于2011年9月正式成立投入使用。是隶属于苏州市文化广电新闻出版局的公益类事业单位。以为市民提供公益性、基本性、均等性、便利性的公共文化服务为宗旨，以保障人民群众享受基本文化权益、参与公共文化生活，完善向社会提供免费文化服务为主要职能。";
 		
 		public static const smallImageUrl:String = "images/{0}";
