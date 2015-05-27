@@ -1,4 +1,4 @@
-package
+﻿package
 {
 	import com.greensock.TweenLite;
 	
@@ -132,7 +132,7 @@ package
 			btnRight.width = arrowSize;
 			btnRight.height = arrowSize;
 //			btnRight.addEventListener(MouseEvent.CLICK, onRight);
-			onRight.addEventListener(TouchEvent.TAP, onRight);
+			btnRight.addEventListener(TouchEvent.TAP, onRight);
 			this.addChild(btnRight);
 			
 			btnBarcode.x = photoWidth/2 - arrowSize/2;
