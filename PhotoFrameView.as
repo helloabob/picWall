@@ -11,6 +11,7 @@ package
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import org.tuio.TouchEvent;
 	
 	public class PhotoFrameView extends BaseSprite
 	{
@@ -122,21 +123,24 @@ package
 			btnLeft.y = 252;
 			btnLeft.width = arrowSize;
 			btnLeft.height = arrowSize;
-			btnLeft.addEventListener(MouseEvent.CLICK, onLeft);
+//			btnLeft.addEventListener(MouseEvent.CLICK, onLeft);
+			btnLeft.addEventListener(TouchEvent.TAP, onLeft);
 			this.addChild(btnLeft);
 			
 			btnRight.x = 841;
 			btnRight.y = 252;
 			btnRight.width = arrowSize;
 			btnRight.height = arrowSize;
-			btnRight.addEventListener(MouseEvent.CLICK, onRight);
+//			btnRight.addEventListener(MouseEvent.CLICK, onRight);
+			onRight.addEventListener(TouchEvent.TAP, onRight);
 			this.addChild(btnRight);
 			
 			btnBarcode.x = photoWidth/2 - arrowSize/2;
 			btnBarcode.y = photoHeight - arrowSize;
 			btnBarcode.width = arrowSize;
 			btnBarcode.height = arrowSize;
-			btnBarcode.addEventListener(MouseEvent.CLICK, onBarcode);
+//			btnBarcode.addEventListener(MouseEvent.CLICK, onBarcode);
+			btnBarcode.addEventListener(TouchEvent.TAP, onBarcode);
 			this.addChild(btnBarcode);
 			
 			_viewBarcode.x = photoWidth/2 - _viewBarcode.width/2;
@@ -147,14 +151,16 @@ package
 			btnFavor.y = photoHeight - arrowSize;
 			btnFavor.width = arrowSize;
 			btnFavor.height = arrowSize;
-			btnFavor.addEventListener(MouseEvent.CLICK, onFavor);
+//			btnFavor.addEventListener(MouseEvent.CLICK, onFavor);
+			btnFavor.addEventListener(TouchEvent.TAP, onFavor);
 			this.addChild(btnFavor);
 			
 			btnClose.x = photoWidth/2 + arrowSize/2 + 20;
 			btnClose.y = photoHeight - arrowSize;
 			btnClose.width = arrowSize;
 			btnClose.height = arrowSize;
-			btnClose.addEventListener(MouseEvent.CLICK, onClose);
+//			btnClose.addEventListener(MouseEvent.CLICK, onClose);
+			btnClose.addEventListener(TouchEvent.TAP, onClose);
 			this.addChild(btnClose);
 			
 			sprFav.x = imageOffsetArray[2].x + 20;
@@ -189,7 +195,7 @@ package
 			
 		}
 		
-		private function onFavor(evt:MouseEvent):void{
+		private function onFavor(evt:Event):void{
 			var count:int = 0;
 			var imageIndex:int = photoArray[currentIndex].imageIndex;
 			if(Constants.favCountArray[imageIndex]==null){
@@ -203,11 +209,11 @@ package
 			txtFav.text = count.toString();
 		}
 		
-		private function onBarcode(evt:MouseEvent):void{
+		private function onBarcode(evt:Event):void{
 			this.showBarcode();
 		}
 		
-		private function onLeft(evt:MouseEvent):void{
+		private function onLeft(evt:Event):void{
 			trace("left");
 			if(canInteractive==false)return;
 			canInteractive = false;
@@ -217,7 +223,7 @@ package
 			isAnimation = true;
 		}
 		
-		private function onRight(evt:MouseEvent):void{
+		private function onRight(evt:Event):void{
 			trace("right");
 			if(canInteractive==false)return;
 			canInteractive = false;
@@ -306,7 +312,7 @@ package
 		}
 		
 		/*关闭方法，当用户点击相框的关闭按钮触发*/
-		private function onClose(evt:MouseEvent):void {
+		private function onClose(evt:Event):void {
 			closeHandler(this);
 		}
 		
