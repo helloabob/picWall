@@ -13,24 +13,27 @@ package
 		/**
 		 * 大小图切换持续时间
 		 */
-		public static const durationForSwitchArray:Array = [14000,22000];
+//		public static const durationForSwitchArray:Array = [14000,22000];
+		public static const durationForSwitchArray:Array = [14000,22000,22000];
 		
 		/*0:小图 1:中图 2:大图*/
 		public static var runMode:int = 0;
 		
 		/*大中小图对应-每屏放几行*/
-		public static var totalRowsArray:Array = [6,2]
+//		public static var totalRowsArray:Array = [6,2]
 //		public static var totalRowsArray:Array = [9,6,2];
 //		public static var totalRowsArray:Array = [6,3,2];
+		public static var totalRowsArray:Array = [6,2,1];
 		
 		/*store image data array*/
-//		public static var memoryDataArray:Array = [{},{},{}];
-		public static var memoryDataArray:Array = [{},{}];
+		public static var memoryDataArray:Array = [{},{},{}];
+//		public static var memoryDataArray:Array = [{},{}];
 		
 		/*image height array*/
 //		public static var imageHeightArray:Array = [120,180,540];
 //		public static var imageHeightArray:Array = [160,320,270];
-		public static var imageHeightArray:Array = [180,540];
+//		public static var imageHeightArray:Array = [180,540];
+		public static var imageHeightArray:Array = [180,540,1080];
 		
 //		public static var totalRowsForNormal:int = 9;
 //		public static var totalRowsForLarge:int = 2;
