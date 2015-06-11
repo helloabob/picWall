@@ -44,6 +44,9 @@ package
 		 */
 		public function set imageIndex(value:int):void
 		{
+			if(_imageIndex!=-1&&_imageIndex!=value){
+				this.unloadAndStop();
+			}
 			_imageIndex = value;
 			this.imageUrl = Constants.getBigImagePathWithIndex(imageIndex);
 		}

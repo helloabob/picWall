@@ -30,7 +30,7 @@ package
 		
 		/*展示8个相框通用方法*/
 		public function showPhotoFrame(imageId:String, offset_x:int):void {
-			if(photoFramesStack.length<=0)return;
+//			if(photoFramesStack.length<=0)return;
 			
 			/*计算摆放位置*/
 			var tmp:int = 0;
@@ -40,30 +40,40 @@ package
 					break;
 				}
 			}
-			
-			var photo:PhotoFrameView = photoFramesStack.pop();
-			
 			if(tmp==0)tmp=8;
 			tmp = tmp-1;
-			var res:int = 0;
-			for(var j:int=0;j<8;j++){
-				res = tmp + j;
-				if(res>=8)res=res-8;
-				if(photoFramesShown[res]==null){
-					photoFramesShown[res]=photo;
-					break;
-				}
+			
+			var res:int = tmp;
+			var photo:PhotoFrameView = null;
+			if(photoFramesShown[tmp]==null){
+				photo = photoFramesShown[tmp];
+			}else{
+				photo = photoFramesStack.pop();
+				photo.photoIndex = res;
+				photo.x = res*960 + (960-photo.photoWidth)/2;
+				photo.y = (540-photo.photoHeight)/2;
+				canvas.addChild(photo);
 			}
 			
-			photo.photoIndex = res;
-			photo.x = res*960 + (960-photo.photoWidth)/2;
-			photo.y = (540-photo.photoHeight)/2;
+//			var res:int = 0;
+//			for(var j:int=0;j<8;j++){
+//				res = tmp + j;
+//				if(res>=8)res=res-8;
+//				if(photoFramesShown[res]==null){
+//					photoFramesShown[res]=photo;
+//					break;
+//				}
+//			}
+			
+//			photo.photoIndex = res;
+//			photo.x = res*960 + (960-photo.photoWidth)/2;
+//			photo.y = (540-photo.photoHeight)/2;
 			
 			/*end*/
 			
 			
 //			photoFramesShown.push(photo);
-			canvas.addChild(photo);
+//			canvas.addChild(photo);
 //			photo.x = Constants.appWidth/2 - photo.photoWidth/2;
 //			photo.y = Constants.appHeight/2 - photo.photoHeight/2;
 			/*准备显示*/
