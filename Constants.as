@@ -76,7 +76,7 @@ package
 		/**
 		 * debugger模式
 		 */
-		public static var debugger:Boolean = true;
+		public static var debugger:Boolean = false;
 		
 		public function Constants()
 		{

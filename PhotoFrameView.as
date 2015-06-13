@@ -6,11 +6,13 @@
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.events.TransformGestureEvent;
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import flash.utils.Timer;
 	
 	import org.tuio.TouchEvent;
 	
@@ -85,6 +87,8 @@
 		/*是否动画*/
 		private var isAnimation:Boolean = false;
 		
+		private var barcodeTimer:Timer = null;
+		
 		private function onSwipe(evt:TransformGestureEvent):void{
 			if(evt.offsetX == 1){
 				this.onLeft(null);
@@ -97,9 +101,13 @@
 		{
 			super();
 			
+			var padding:int = 20;
+			
 			this.graphics.beginFill(0x000000,0.7);
-			this.graphics.drawRect(0,0,photoWidth,photoHeight);
+//			this.graphics.drawRect(-padding,-padding,photoWidth+2*padding,photoHeight+2*padding);
+			this.graphics.drawRoundRect(-padding,-padding,photoWidth+2*padding,photoHeight+2*padding,padding,padding);
 			this.graphics.endFill();
+			this
 			
 			this.addEventListener(TransformGestureEvent.GESTURE_SWIPE, onSwipe);
 			
@@ -142,9 +150,12 @@
 			btnBarcode.height = arrowSize;
 //			btnBarcode.addEventListener(MouseEvent.CLICK, onBarcode);
 //			btnBarcode.addEventListener(TouchEvent.TAP, onBarcode);
-			btnBarcode.addEventListener(TouchEvent.TOUCH_DOWN, onBarcodeDown);
-			btnBarcode.addEventListener(TouchEvent.TOUCH_UP, onBarcodeUp);
+			btnBarcode.addEventListener(Constants.debugger?MouseEvent.MOUSE_OVER:TouchEvent.TOUCH_OVER, onBarcodeOver);
+			btnBarcode.addEventListener(Constants.debugger?MouseEvent.MOUSE_OUT:TouchEvent.TOUCH_OUT, onBarcodeOut);
 			this.addChild(btnBarcode);
+			
+			barcodeTimer = new Timer(1000,1);
+			barcodeTimer.addEventListener(TimerEvent.TIMER, onTimer);
 			
 			_viewBarcode.x = photoWidth/2 - _viewBarcode.width/2;
 			_viewBarcode.y = btnBarcode.y - _viewBarcode.height - 20;
@@ -216,12 +227,20 @@
 			this.showBarcode();
 		}
 		
-		private function onBarcodeDown(evt:Event):void{
-			
+		private function onBarcodeOver(evt:Event):void{
+			if(barcodeTimer.running == false){
+				barcodeTimer.start();
+			}
 		}
 		
-		private function onBarcodeUp(evt:Event):void{
-			
+		private function onBarcodeOut(evt:Event):void{
+			if(barcodeTimer.running == true){
+				barcodeTimer.stop();
+			}
+		}
+		
+		private function onTimer(evt:TimerEvent):void{
+			this.onBarcode(null);
 		}
 		
 		private function onLeft(evt:Event):void{
