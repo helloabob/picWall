@@ -45,7 +45,7 @@ package
 			
 			var res:int = tmp;
 			var photo:PhotoFrameView = null;
-			if(photoFramesShown[tmp]==null){
+			if(photoFramesShown[tmp]!=null){
 				photo = photoFramesShown[tmp];
 			}else{
 				photo = photoFramesStack.pop();

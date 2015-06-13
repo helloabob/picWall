@@ -73,6 +73,11 @@ package
 		 */
 		public static var favCountArray:Array = [];
 		
+		/**
+		 * debugger模式
+		 */
+		public static var debugger:Boolean = true;
+		
 		public function Constants()
 		{
 		}

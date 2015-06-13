@@ -11,6 +11,7 @@
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	
 	import org.tuio.TouchEvent;
 	
 	public class PhotoFrameView extends BaseSprite
@@ -96,7 +97,7 @@
 		{
 			super();
 			
-			this.graphics.beginFill(0x000000,0);
+			this.graphics.beginFill(0x000000,0.7);
 			this.graphics.drawRect(0,0,photoWidth,photoHeight);
 			this.graphics.endFill();
 			
@@ -124,7 +125,7 @@
 			btnLeft.width = arrowSize;
 			btnLeft.height = arrowSize;
 //			btnLeft.addEventListener(MouseEvent.CLICK, onLeft);
-			btnLeft.addEventListener(TouchEvent.TAP, onLeft);
+			btnLeft.addEventListener(Constants.debugger?MouseEvent.CLICK:TouchEvent.TAP, onLeft);
 			this.addChild(btnLeft);
 			
 			btnRight.x = 841;
@@ -132,7 +133,7 @@
 			btnRight.width = arrowSize;
 			btnRight.height = arrowSize;
 //			btnRight.addEventListener(MouseEvent.CLICK, onRight);
-			btnRight.addEventListener(TouchEvent.TAP, onRight);
+			btnRight.addEventListener(Constants.debugger?MouseEvent.CLICK:TouchEvent.TAP, onRight);
 			this.addChild(btnRight);
 			
 			btnBarcode.x = photoWidth/2 - arrowSize/2;
@@ -140,7 +141,9 @@
 			btnBarcode.width = arrowSize;
 			btnBarcode.height = arrowSize;
 //			btnBarcode.addEventListener(MouseEvent.CLICK, onBarcode);
-			btnBarcode.addEventListener(TouchEvent.TAP, onBarcode);
+//			btnBarcode.addEventListener(TouchEvent.TAP, onBarcode);
+			btnBarcode.addEventListener(TouchEvent.TOUCH_DOWN, onBarcodeDown);
+			btnBarcode.addEventListener(TouchEvent.TOUCH_UP, onBarcodeUp);
 			this.addChild(btnBarcode);
 			
 			_viewBarcode.x = photoWidth/2 - _viewBarcode.width/2;
@@ -152,7 +155,7 @@
 			btnFavor.width = arrowSize;
 			btnFavor.height = arrowSize;
 //			btnFavor.addEventListener(MouseEvent.CLICK, onFavor);
-			btnFavor.addEventListener(TouchEvent.TAP, onFavor);
+			btnFavor.addEventListener(Constants.debugger?MouseEvent.CLICK:TouchEvent.TAP, onFavor);
 			this.addChild(btnFavor);
 			
 			btnClose.x = photoWidth/2 + arrowSize/2 + 20;
@@ -160,7 +163,7 @@
 			btnClose.width = arrowSize;
 			btnClose.height = arrowSize;
 //			btnClose.addEventListener(MouseEvent.CLICK, onClose);
-			btnClose.addEventListener(TouchEvent.TAP, onClose);
+			btnClose.addEventListener(Constants.debugger?MouseEvent.CLICK:TouchEvent.TAP, onClose);
 			this.addChild(btnClose);
 			
 			sprFav.x = imageOffsetArray[2].x + 20;
@@ -211,6 +214,14 @@
 		
 		private function onBarcode(evt:Event):void{
 			this.showBarcode();
+		}
+		
+		private function onBarcodeDown(evt:Event):void{
+			
+		}
+		
+		private function onBarcodeUp(evt:Event):void{
+			
 		}
 		
 		private function onLeft(evt:Event):void{
