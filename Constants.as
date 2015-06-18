@@ -29,11 +29,14 @@ package
 		public static var memoryDataArray:Array = [{},{},{}];
 //		public static var memoryDataArray:Array = [{},{}];
 		
+		/*大图模式，不规则排序最大偏移量*/
+		public static const bigImagePadding:int = 100;
+		
 		/*image height array*/
 //		public static var imageHeightArray:Array = [120,180,540];
 //		public static var imageHeightArray:Array = [160,320,270];
 //		public static var imageHeightArray:Array = [180,540];
-		public static var imageHeightArray:Array = [180,540,1080];
+		public static var imageHeightArray:Array = [180,540,1080-bigImagePadding];
 		
 //		public static var totalRowsForNormal:int = 9;
 //		public static var totalRowsForLarge:int = 2;
