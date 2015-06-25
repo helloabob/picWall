@@ -30,7 +30,7 @@ package
 //		public static var memoryDataArray:Array = [{},{}];
 		
 		/*大图模式，不规则排序最大偏移量*/
-		public static const bigImagePadding:int = 100;
+		public static const bigImagePadding:int = 200;
 		
 		/*image height array*/
 //		public static var imageHeightArray:Array = [120,180,540];
@@ -79,7 +79,7 @@ package
 		/**
 		 * debugger模式
 		 */
-		public static var debugger:Boolean = true;
+		public static var debugger:Boolean = false;
 		
 		public function Constants()
 		{
